@@ -1,7 +1,20 @@
 import React, { useMemo, useState } from 'react';
-import { AlertCircle, CheckCircle2, ClipboardList, HeartPulse, Plus, Search, ShieldAlert } from 'lucide-react';
+import {
+  AlertCircle,
+  CheckCircle2,
+  ClipboardList,
+  HeartPulse,
+  Plus,
+  Search,
+  ShieldAlert,
+} from 'lucide-react';
 import { useAcampamento } from '../../../application/AcampamentoStoreContext';
-import { GravidadeOcorrencia, StatusOcorrencia, TIPOS_OCORRENCIA, TipoOcorrencia } from '../domain/TipoOcorrencia';
+import {
+  GravidadeOcorrencia,
+  StatusOcorrencia,
+  TIPOS_OCORRENCIA,
+  TipoOcorrencia,
+} from '../domain/TipoOcorrencia';
 
 interface TelaOcorrenciasProps {
   onConverterEmPunicao?: (unidadeId: string, motivo: string, ocorrenciaId: string) => void;
@@ -75,28 +88,25 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
   };
 
   return (
-    <div className="space-y-4">
-      <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-        <h1 className="flex items-center gap-2 text-lg font-extrabold text-white">
-          <ClipboardList className="h-5 w-5 text-rose-400" />
+    <div className="space-y-4 animate-fade-slide-up">
+      <div className="card-camp rounded-3xl p-4">
+        <h1 className="flex items-center gap-2 text-lg font-black text-[#0A3D2E]">
+          <ClipboardList className="h-5 w-5 text-[#C81E1E]" />
           Ocorrências Individuais (Por Criança / Participante)
         </h1>
-        <p className="mt-1 text-xs text-slate-400">
+        <p className="mt-1 text-xs font-medium text-[#4B5B53]">
           Registre se alguma criança xingou, está doente, precisou de medicação ou teve algum
           incidente durante o acampamento.
         </p>
       </div>
 
       {/* Formulário Rápido */}
-      <form
-        onSubmit={handleRegistrar}
-        className="space-y-3 rounded-2xl border border-slate-800 bg-slate-900/90 p-4"
-      >
-        <h2 className="text-sm font-bold text-white">Nova Ocorrência</h2>
+      <form onSubmit={handleRegistrar} className="card-camp space-y-3 rounded-3xl p-4">
+        <h2 className="text-sm font-black text-[#0A3D2E]">Nova Ocorrência</h2>
 
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-1.5">
-            <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+            <label className="text-[11px] font-extrabold uppercase tracking-wider text-[#5C6B64]">
               Buscar Criança / Participante
             </label>
             <input
@@ -110,12 +120,12 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
                 if (primeiro) setParticipanteId(primeiro.id);
               }}
               placeholder="Filtrar por nome ou unidade..."
-              className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white placeholder-slate-500"
+              className="w-full rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-3 py-2 text-xs font-medium text-[#0A2E22] placeholder-[#8B8574]"
             />
             <select
               value={participanteId}
               onChange={(e) => setParticipanteId(e.target.value)}
-              className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm font-semibold text-white"
+              className="w-full rounded-xl border border-[#D8CFBC] bg-white px-3 py-2.5 text-sm font-bold text-[#0A3D2E]"
             >
               {participantesFiltrados.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -127,13 +137,13 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
 
           <div className="grid grid-cols-2 gap-2.5">
             <div className="space-y-1.5">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              <label className="text-[11px] font-extrabold uppercase tracking-wider text-[#5C6B64]">
                 Tipo
               </label>
               <select
                 value={tipo}
                 onChange={(e) => setTipo(e.target.value as TipoOcorrencia)}
-                className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 text-xs font-semibold text-white"
+                className="w-full rounded-xl border border-[#D8CFBC] bg-white px-3 py-2.5 text-xs font-bold text-[#0A3D2E]"
               >
                 {TIPOS_OCORRENCIA.map((t) => (
                   <option key={t.valor} value={t.valor}>
@@ -144,13 +154,13 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                Atenção / Gravidade
+              <label className="text-[11px] font-extrabold uppercase tracking-wider text-[#5C6B64]">
+                Gravidade
               </label>
               <select
                 value={gravidade}
                 onChange={(e) => setGravidade(e.target.value as GravidadeOcorrencia)}
-                className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 text-xs font-semibold text-white"
+                className="w-full rounded-xl border border-[#D8CFBC] bg-white px-3 py-2.5 text-xs font-bold text-[#0A3D2E]"
               >
                 <option value="LEVE">Leve</option>
                 <option value="MODERADA">Moderada</option>
@@ -166,22 +176,22 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
             onChange={(e) => setDescricao(e.target.value)}
             placeholder="O que aconteceu? (ex: Xingou colega durante a prova, ou está com febre / dor de barriga)"
             rows={2}
-            className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-500"
+            className="w-full rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-3 py-2 text-sm text-[#0A2E22] placeholder-[#8B8574] focus:bg-white focus:outline-none"
           />
           <textarea
             value={providencia}
             onChange={(e) => setProvidencia(e.target.value)}
             placeholder="Providência tomada (opcional: conversamos, tomou remédio, avisou os pais)"
             rows={2}
-            className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-500"
+            className="w-full rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-3 py-2 text-sm text-[#0A2E22] placeholder-[#8B8574] focus:bg-white focus:outline-none"
           />
         </div>
 
-        {erro && <p className="text-xs text-rose-400">{erro}</p>}
+        {erro && <p className="text-xs font-semibold text-rose-600">{erro}</p>}
 
         <button
           type="submit"
-          className="inline-flex items-center gap-2 rounded-xl bg-rose-500 px-4 py-2.5 text-sm font-bold text-white hover:bg-rose-400"
+          className="inline-flex items-center gap-2 rounded-xl bg-[#C81E1E] px-4 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:bg-[#B91C1C] active:scale-[0.98]"
         >
           <Plus className="h-4 w-4" />
           Registrar Ocorrência no Nome
@@ -189,26 +199,26 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
       </form>
 
       {/* Filtros + Lista */}
-      <div className="space-y-3 rounded-2xl border border-slate-800 bg-slate-900/90 p-4">
+      <div className="card-camp space-y-3 rounded-3xl p-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-sm font-bold text-white">
+          <h2 className="text-sm font-black text-[#0A3D2E]">
             Histórico de Ocorrências ({ocorrenciasFiltradas.length})
           </h2>
           <div className="flex flex-wrap gap-2">
             <div className="relative">
-              <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+              <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#5C6B64]" />
               <input
                 type="text"
                 value={filtroTexto}
                 onChange={(e) => setFiltroTexto(e.target.value)}
                 placeholder="Buscar criança..."
-                className="rounded-xl border border-slate-700 bg-slate-950 py-1.5 pl-8 pr-3 text-xs text-white"
+                className="rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] py-1.5 pl-8 pr-3 text-xs font-medium text-[#0A2E22]"
               />
             </div>
             <select
               value={filtroTipo}
               onChange={(e) => setFiltroTipo(e.target.value as TipoOcorrencia | 'TODOS')}
-              className="rounded-xl border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-xs text-white"
+              className="rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-2.5 py-1.5 text-xs font-bold text-[#0A3D2E]"
             >
               <option value="TODOS">Todos os Tipos</option>
               {TIPOS_OCORRENCIA.map((t) => (
@@ -221,7 +231,7 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
         </div>
 
         {ocorrenciasFiltradas.length === 0 ? (
-          <p className="py-6 text-center text-xs text-slate-400">
+          <p className="py-6 text-center text-xs font-medium text-[#5C6B64]">
             Nenhuma ocorrência registrada até o momento.
           </p>
         ) : (
@@ -229,34 +239,34 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
             {ocorrenciasFiltradas.map((oc) => (
               <div
                 key={oc.id}
-                className="rounded-xl border border-slate-800 bg-slate-950/70 p-3.5 space-y-2"
+                className="space-y-2 rounded-2xl border border-[#E2DAC7] bg-[#FAF6EA] p-3.5"
               >
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div>
                     <div className="flex flex-wrap items-center gap-1.5">
                       {oc.tipo === 'SAUDE' ? (
-                        <HeartPulse className="h-4 w-4 text-rose-400" />
+                        <HeartPulse className="h-4 w-4 text-[#C81E1E]" />
                       ) : oc.tipo === 'COMPORTAMENTO' ? (
-                        <ShieldAlert className="h-4 w-4 text-amber-400" />
+                        <ShieldAlert className="h-4 w-4 text-[#EA580C]" />
                       ) : (
-                        <AlertCircle className="h-4 w-4 text-sky-400" />
+                        <AlertCircle className="h-4 w-4 text-[#0369A1]" />
                       )}
-                      <span className="text-sm font-extrabold text-white">
+                      <span className="text-sm font-black text-[#0A3D2E]">
                         {oc.participanteNome}
                       </span>
-                      <span className="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] font-bold text-slate-300">
+                      <span className="rounded-full bg-[#0A3D2E] px-2.5 py-0.5 text-[10px] font-bold text-[#FACC15]">
                         {oc.unidadeNome}
                       </span>
                     </div>
-                    <p className="mt-0.5 text-[11px] text-slate-400">
+                    <p className="mt-0.5 text-[11px] font-medium text-[#5C6B64]">
                       {TIPOS_OCORRENCIA.find((t) => t.valor === oc.tipo)?.rotulo} • Gravidade:{' '}
                       <strong
                         className={
                           oc.gravidade === 'URGENTE'
-                            ? 'text-rose-400'
+                            ? 'text-[#C81E1E]'
                             : oc.gravidade === 'MODERADA'
-                            ? 'text-amber-300'
-                            : 'text-slate-300'
+                            ? 'text-[#EA580C]'
+                            : 'text-[#0E5A36]'
                         }
                       >
                         {oc.gravidade}
@@ -276,12 +286,12 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
                     onChange={(e) =>
                       atualizarStatusOcorrencia(oc.id, e.target.value as StatusOcorrencia)
                     }
-                    className={`rounded-lg border px-2.5 py-1 text-[11px] font-bold ${
+                    className={`rounded-xl border px-2.5 py-1 text-[11px] font-extrabold ${
                       oc.status === 'RESOLVIDA'
-                        ? 'border-emerald-500/40 bg-emerald-500/15 text-emerald-300'
+                        ? 'border-emerald-300 bg-emerald-100 text-emerald-800'
                         : oc.status === 'ACOMPANHANDO'
-                        ? 'border-amber-500/40 bg-amber-500/15 text-amber-300'
-                        : 'border-rose-500/40 bg-rose-500/15 text-rose-300'
+                        ? 'border-amber-300 bg-amber-100 text-amber-900'
+                        : 'border-rose-300 bg-rose-100 text-rose-800'
                     }`}
                   >
                     <option value="ABERTA">Aberta</option>
@@ -290,9 +300,9 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
                   </select>
                 </div>
 
-                <p className="text-sm text-slate-200">{oc.descricao}</p>
+                <p className="text-sm font-medium text-[#0A2E22]">{oc.descricao}</p>
                 {oc.providencia && (
-                  <p className="flex items-center gap-1.5 text-xs text-emerald-300">
+                  <p className="flex items-center gap-1.5 text-xs font-bold text-[#0E5A36]">
                     <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
                     Providência: {oc.providencia}
                   </p>
@@ -309,7 +319,7 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
                           oc.id
                         )
                       }
-                      className="rounded-lg border border-amber-500/40 bg-amber-500/10 px-2.5 py-1 text-[11px] font-bold text-amber-300 hover:bg-amber-500/20"
+                      className="rounded-xl bg-[#FACC15] px-3 py-1.5 text-[11px] font-black text-[#0A3D2E] shadow-xs hover:bg-[#fde047]"
                     >
                       Aplicar Punição na Unidade (Admin)
                     </button>

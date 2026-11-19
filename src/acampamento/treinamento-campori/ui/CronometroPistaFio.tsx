@@ -70,10 +70,10 @@ export const CronometroPistaFio: React.FC = () => {
   const ordenados = [...temposPistaFio].sort((a, b) => a.duracaoMs - b.duracaoMs);
 
   return (
-    <div className="rounded-2xl border border-rose-500/30 bg-slate-950/80 p-4 space-y-4">
+    <div className="space-y-4 rounded-2xl border-2 border-[#C81E1E]/30 bg-[#FFF5F5] p-4 shadow-md">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h4 className="flex items-center gap-2 text-sm font-bold text-rose-300">
-          <Timer className="h-4 w-4" />
+        <h4 className="flex items-center gap-2 text-sm font-black text-[#991B1B]">
+          <Timer className="h-4 w-4 text-[#C81E1E]" />
           Cronômetro da Pista de Fio (Por Bateria)
         </h4>
       </div>
@@ -82,7 +82,7 @@ export const CronometroPistaFio: React.FC = () => {
         <select
           value={equipeId}
           onChange={(e) => setEquipeId(e.target.value)}
-          className="flex-1 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm font-semibold text-white"
+          className="flex-1 rounded-xl border-2 border-[#D8CFBC] bg-white px-3 py-2.5 text-sm font-bold text-[#0A3D2E]"
         >
           {equipesOperacionais.map((eq) => (
             <option key={eq.id} value={eq.id}>
@@ -91,7 +91,7 @@ export const CronometroPistaFio: React.FC = () => {
           ))}
         </select>
 
-        <div className="rounded-2xl border border-slate-700 bg-slate-900 px-5 py-2.5 text-center font-mono text-2xl font-extrabold text-amber-300">
+        <div className="rounded-2xl border-2 border-[#0A3D2E] bg-[#0A3D2E] px-5 py-2.5 text-center font-mono text-2xl font-black text-[#FACC15] shadow-md">
           {formatarMs(tempoExibidoMs)}
         </div>
       </div>
@@ -100,7 +100,7 @@ export const CronometroPistaFio: React.FC = () => {
         {!rodando ? (
           <button
             onClick={() => setRodando(true)}
-            className="flex items-center justify-center gap-1.5 rounded-xl bg-emerald-500 py-2.5 text-sm font-bold text-emerald-950 hover:bg-emerald-400"
+            className="flex items-center justify-center gap-1.5 rounded-xl bg-[#0E5A36] py-2.5 text-sm font-extrabold text-white shadow-sm hover:bg-[#157347] active:scale-[0.98]"
           >
             <Play className="h-4 w-4" />
             Iniciar
@@ -108,7 +108,7 @@ export const CronometroPistaFio: React.FC = () => {
         ) : (
           <button
             onClick={pausar}
-            className="flex items-center justify-center gap-1.5 rounded-xl bg-amber-400 py-2.5 text-sm font-bold text-slate-950 hover:bg-amber-300"
+            className="flex items-center justify-center gap-1.5 rounded-xl bg-[#FACC15] py-2.5 text-sm font-black text-[#0A3D2E] shadow-sm hover:bg-[#fde047]"
           >
             <Pause className="h-4 w-4" />
             Pausar
@@ -117,7 +117,7 @@ export const CronometroPistaFio: React.FC = () => {
 
         <button
           onClick={zerar}
-          className="flex items-center justify-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800 py-2.5 text-sm font-semibold text-slate-200 hover:bg-slate-700"
+          className="flex items-center justify-center gap-1.5 rounded-xl border border-[#D8CFBC] bg-white py-2.5 text-sm font-bold text-[#0A3D2E] hover:bg-[#FAF6EA]"
         >
           <RotateCcw className="h-4 w-4" />
           Zerar
@@ -126,7 +126,7 @@ export const CronometroPistaFio: React.FC = () => {
         <button
           onClick={salvarBateria}
           disabled={tempoExibidoMs <= 0}
-          className="flex items-center justify-center gap-1.5 rounded-xl bg-rose-500 py-2.5 text-sm font-bold text-white hover:bg-rose-400 disabled:opacity-40"
+          className="flex items-center justify-center gap-1.5 rounded-xl bg-[#C81E1E] py-2.5 text-sm font-extrabold text-white shadow-sm hover:bg-[#B91C1C] disabled:opacity-40"
         >
           <Flag className="h-4 w-4" />
           Registrar
@@ -134,19 +134,19 @@ export const CronometroPistaFio: React.FC = () => {
       </div>
 
       {ordenados.length > 0 && (
-        <div className="space-y-1.5 border-t border-slate-800 pt-3">
-          <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+        <div className="space-y-1.5 border-t border-rose-200 pt-3">
+          <p className="text-xs font-extrabold uppercase tracking-wider text-[#991B1B]">
             Tempos Registrados (Menor Tempo Primeiro)
           </p>
           {ordenados.map((reg, idx) => (
             <div
               key={reg.id}
-              className="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900/70 px-3 py-2 text-xs"
+              className="flex items-center justify-between rounded-xl border border-[#E2DAC7] bg-white px-3 py-2 text-xs shadow-xs"
             >
-              <span className="font-semibold text-white">
+              <span className="font-bold text-[#0A3D2E]">
                 {idx + 1}º • {reg.nomeEquipe}
               </span>
-              <span className="font-mono text-sm font-extrabold text-amber-300">
+              <span className="rounded-lg bg-[#0A3D2E] px-2.5 py-0.5 font-mono text-sm font-black text-[#FACC15]">
                 {formatarMs(reg.duracaoMs)}
               </span>
             </div>

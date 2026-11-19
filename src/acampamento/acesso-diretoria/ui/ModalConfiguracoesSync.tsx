@@ -100,16 +100,20 @@ export const ModalConfiguracoesSync: React.FC<ModalConfiguracoesSyncProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/75 p-0 sm:items-center sm:p-4 backdrop-blur-sm">
-      <div className="max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-t-3xl sm:rounded-3xl border border-slate-700 bg-slate-900 p-5 shadow-2xl">
-        <div className="mb-4 flex items-center justify-between border-b border-slate-800 pb-3">
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-[#0A3D2E]/50 p-0 sm:items-center sm:p-4 backdrop-blur-sm">
+      <div className="max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-t-3xl sm:rounded-3xl border-2 border-[#D8CFBC] bg-[#FAF6EA] p-5 shadow-2xl animate-fade-slide-up">
+        <div className="mb-4 flex items-center justify-between border-b border-[#E2DAC7] pb-3">
           <div>
-            <h2 className="text-lg font-bold text-white">Configurações, Offline & Sincronização</h2>
-            <p className="text-xs text-slate-400">Clube Dorina Azevedo • Chácara Morete</p>
+            <h2 className="text-lg font-black text-[#0A3D2E]">
+              Configurações, Offline & Sincronização
+            </h2>
+            <p className="text-xs font-semibold text-[#5C6B64]">
+              Clube Dorina Azevedo • Chácara Morete
+            </p>
           </div>
           <button
             onClick={onFechar}
-            className="rounded-xl p-2 text-slate-400 hover:bg-slate-800 hover:text-white"
+            className="rounded-xl p-2 text-[#5C6B64] hover:bg-[#EDE5D3] hover:text-[#0A3D2E]"
             aria-label="Fechar"
           >
             <X className="h-5 w-5" />
@@ -117,35 +121,35 @@ export const ModalConfiguracoesSync: React.FC<ModalConfiguracoesSyncProps> = ({
         </div>
 
         {feedback && (
-          <div className="mb-3 flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">
-            <CheckCircle2 className="h-4 w-4 shrink-0" />
+          <div className="mb-3 flex items-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-800">
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
             <span>{feedback}</span>
           </div>
         )}
         {erro && (
-          <div className="mb-3 rounded-xl border border-rose-500/40 bg-rose-500/10 px-3 py-2 text-sm text-rose-300">
+          <div className="mb-3 rounded-xl border border-rose-300 bg-rose-50 px-3 py-2 text-sm font-semibold text-rose-700">
             {erro}
           </div>
         )}
 
-        <div className="space-y-5">
+        <div className="space-y-4">
           {/* Instalação Offline PWA */}
-          <section className="rounded-2xl border border-emerald-500/30 bg-emerald-950/30 p-4">
+          <section className="rounded-2xl border-2 border-[#0A3D2E]/20 bg-white p-4 shadow-sm">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h3 className="flex items-center gap-2 text-sm font-bold text-emerald-300">
-                  <Smartphone className="h-4 w-4" />
+                <h3 className="flex items-center gap-2 text-sm font-extrabold text-[#0A3D2E]">
+                  <Smartphone className="h-4 w-4 text-[#0E5A36]" />
                   App Offline no Celular e Notebook
                 </h3>
-                <p className="mt-1 text-xs text-slate-300">
-                  Todo o itinerário, participantes, manuais e seus registros ficam salvos localmente
-                  neste aparelho para funcionar mesmo sem internet.
+                <p className="mt-1 text-xs text-[#4B5B53]">
+                  Todo o itinerário, participantes, manuais e registros ficam salvos localmente no
+                  aparelho para funcionar 100% sem internet.
                 </p>
               </div>
               {podeInstalarPwa && (
                 <button
                   onClick={onInstalarPwa}
-                  className="shrink-0 rounded-xl bg-emerald-500 px-3 py-2 text-xs font-bold text-emerald-950 hover:bg-emerald-400"
+                  className="shrink-0 rounded-xl bg-[#FACC15] px-3.5 py-2 text-xs font-black text-[#0A3D2E] shadow-sm hover:bg-[#fde047]"
                 >
                   Instalar App
                 </button>
@@ -154,22 +158,22 @@ export const ModalConfiguracoesSync: React.FC<ModalConfiguracoesSyncProps> = ({
             <div className="mt-3 flex flex-wrap items-center gap-2">
               <button
                 onClick={handleAtivarNotif}
-                className="rounded-xl border border-emerald-500/40 bg-emerald-500/15 px-3 py-2 text-xs font-semibold text-emerald-200 hover:bg-emerald-500/25"
+                className="rounded-xl border border-[#0A3D2E]/25 bg-[#0A3D2E]/10 px-3 py-2 text-xs font-bold text-[#0A3D2E] hover:bg-[#0A3D2E]/15"
               >
                 {notifPerm === 'granted'
                   ? 'Notificações Ativas (Testar Alerta)'
                   : 'Ativar Notificações do Navegador'}
               </button>
-              <span className="text-[11px] text-slate-400">
+              <span className="text-[11px] font-semibold text-[#5C6B64]">
                 Status: {notifPerm === 'granted' ? 'Permitido' : notifPerm}
               </span>
             </div>
           </section>
 
           {/* Identificação do Membro da Diretoria */}
-          <section className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
-            <h3 className="mb-2 flex items-center gap-2 text-sm font-bold text-white">
-              <UserCheck className="h-4 w-4 text-amber-400" />
+          <section className="rounded-2xl border border-[#E2DAC7] bg-white p-4 shadow-sm">
+            <h3 className="mb-2 flex items-center gap-2 text-sm font-extrabold text-[#0A3D2E]">
+              <UserCheck className="h-4 w-4 text-[#EA580C]" />
               Seu Nome (Assinatura nos Registros)
             </h3>
             <div className="flex gap-2">
@@ -178,47 +182,47 @@ export const ModalConfiguracoesSync: React.FC<ModalConfiguracoesSyncProps> = ({
                 value={nomeOperador}
                 onChange={(e) => setNomeOperador(e.target.value)}
                 placeholder="Ex: Filipe, Dani, Marco..."
-                className="flex-1 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none"
+                className="flex-1 rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-3 py-2 text-sm font-semibold text-[#0A2E22] focus:border-[#0A3D2E] focus:bg-white focus:outline-none"
               />
               <button
                 onClick={salvarOperador}
-                className="rounded-xl bg-slate-800 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700"
+                className="rounded-xl bg-[#0A3D2E] px-4 py-2 text-sm font-bold text-[#FACC15] hover:bg-[#0F533E]"
               >
                 Salvar
               </button>
             </div>
           </section>
 
-          {/* Sincronização Pull & Push */}
-          <section className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+          {/* Sincronização Pull & Push (100% gratuita) */}
+          <section className="rounded-2xl border border-[#E2DAC7] bg-white p-4 shadow-sm">
             <div className="mb-2 flex items-center justify-between">
-              <h3 className="flex items-center gap-2 text-sm font-bold text-white">
+              <h3 className="flex items-center gap-2 text-sm font-extrabold text-[#0A3D2E]">
                 {syncStatus.online ? (
-                  <Cloud className="h-4 w-4 text-sky-400" />
+                  <Cloud className="h-4 w-4 text-[#0369A1]" />
                 ) : (
-                  <CloudOff className="h-4 w-4 text-amber-400" />
+                  <CloudOff className="h-4 w-4 text-[#EA580C]" />
                 )}
-                Sincronização Automática (Pull & Push)
+                Sincronização Pull & Push (Sem Custo)
               </h3>
               <span
                 className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
                   syncStatus.online
-                    ? 'bg-emerald-500/15 text-emerald-300'
-                    : 'bg-amber-500/15 text-amber-300'
+                    ? 'bg-emerald-100 text-emerald-800'
+                    : 'bg-amber-100 text-amber-800'
                 }`}
               >
                 {syncStatus.online ? 'Internet Conectada' : 'Modo Offline'}
               </span>
             </div>
 
-            <p className="mb-3 text-xs text-slate-400">
-              Armazenamento local ativo. Eventos pendentes para enviar (Push):{' '}
-              <strong className="text-white">{syncStatus.pendingCount}</strong>
+            <p className="mb-3 text-xs text-[#4B5B53]">
+              Eventos pendentes locais (Push):{' '}
+              <strong className="text-[#0A3D2E]">{syncStatus.pendingCount}</strong>
               {syncStatus.lastSyncedAt && (
                 <>
                   {' '}
-                  • Última sincronização:{' '}
-                  <strong className="text-slate-200">
+                  • Última sync:{' '}
+                  <strong className="text-[#0A3D2E]">
                     {new Date(syncStatus.lastSyncedAt).toLocaleTimeString('pt-BR')}
                   </strong>
                 </>
@@ -226,23 +230,23 @@ export const ModalConfiguracoesSync: React.FC<ModalConfiguracoesSyncProps> = ({
             </p>
 
             <div className="space-y-2">
-              <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                URL do Servidor de Sync (Opcional — Wi-Fi local ou Nuvem)
+              <label className="block text-[11px] font-bold uppercase tracking-wider text-[#5C6B64]">
+                Endpoint de Sync (Padrão: /api/sync ou Wi-Fi local)
               </label>
               <div className="flex gap-2">
                 <input
-                  type="url"
+                  type="text"
                   value={endpointInput}
                   onChange={(e) => setEndpointInput(e.target.value)}
-                  placeholder="Ex: http://192.168.0.10:4000/api/sync ou /api/sync"
-                  className="flex-1 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-sky-400 focus:outline-none"
+                  placeholder="/api/sync ou http://192.168.0.10:4000/api/sync"
+                  className="flex-1 rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-3 py-2 text-xs font-medium text-[#0A2E22] focus:border-[#0369A1] focus:bg-white focus:outline-none"
                 />
                 <button
                   onClick={() => {
                     configurarEndpointSync(endpointInput);
                     setFeedback('Endpoint de sincronização salvo!');
                   }}
-                  className="rounded-xl bg-slate-800 px-3 py-2 text-xs font-semibold text-white hover:bg-slate-700"
+                  className="rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-3 py-2 text-xs font-bold text-[#0A3D2E] hover:bg-[#EFE8D8]"
                 >
                   Salvar URL
                 </button>
@@ -250,25 +254,25 @@ export const ModalConfiguracoesSync: React.FC<ModalConfiguracoesSyncProps> = ({
               <button
                 onClick={() => void sincronizarAgora()}
                 disabled={!syncStatus.endpointConfigured || !syncStatus.online || syncStatus.syncing}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-sky-500/20 px-4 py-2.5 text-sm font-semibold text-sky-300 border border-sky-500/30 hover:bg-sky-500/30 disabled:opacity-40"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#0369A1] px-4 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-[#0284C7] disabled:opacity-40"
               >
                 <RefreshCw className={`h-4 w-4 ${syncStatus.syncing ? 'animate-spin' : ''}`} />
                 {syncStatus.syncing ? 'Sincronizando Pull & Push...' : 'Sincronizar Agora (Pull / Push)'}
               </button>
               {syncStatus.lastError && (
-                <p className="text-xs text-rose-400">Erro no sync: {syncStatus.lastError}</p>
+                <p className="text-xs font-semibold text-rose-600">Erro: {syncStatus.lastError}</p>
               )}
             </div>
 
-            <div className="mt-4 flex flex-wrap gap-2 border-t border-slate-800 pt-3">
+            <div className="mt-4 flex flex-wrap gap-2 border-t border-[#E2DAC7] pt-3">
               <button
                 onClick={handleBaixarBackup}
-                className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-semibold text-slate-200 hover:bg-slate-800"
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-3 py-2 text-xs font-bold text-[#0A3D2E] hover:bg-[#EFE8D8]"
               >
                 <Download className="h-3.5 w-3.5" />
                 Exportar Backup JSON
               </button>
-              <label className="flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-semibold text-slate-200 hover:bg-slate-800">
+              <label className="flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-3 py-2 text-xs font-bold text-[#0A3D2E] hover:bg-[#EFE8D8]">
                 <Upload className="h-3.5 w-3.5" />
                 Importar Backup JSON
                 <input type="file" accept=".json" onChange={handleImportarBackup} className="hidden" />
@@ -276,16 +280,16 @@ export const ModalConfiguracoesSync: React.FC<ModalConfiguracoesSyncProps> = ({
             </div>
           </section>
 
-          {/* Simulador de Horário para Testes */}
-          <section className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
-            <h3 className="mb-1.5 flex items-center gap-2 text-sm font-bold text-white">
-              <Clock className="h-4 w-4 text-purple-400" />
-              Simulador de Horário do Acampamento (Teste)
+          {/* Simulador de Horário */}
+          <section className="rounded-2xl border border-[#E2DAC7] bg-white p-4 shadow-sm">
+            <h3 className="mb-1.5 flex items-center gap-2 text-sm font-extrabold text-[#0A3D2E]">
+              <Clock className="h-4 w-4 text-purple-600" />
+              Simulador de Horário (Para Testar Alertas)
             </h3>
-            <p className="mb-3 text-xs text-slate-400">
-              Teste a Central de Avisos e notificações simulando um horário dos dias 20, 21 ou 22/11.
+            <p className="mb-3 text-xs text-[#4B5B53]">
+              Simule qualquer horário dos dias 20, 21 ou 22/11 para testar a Central de Avisos.
             </p>
-            <div className="flex flex-wrap gap-2 mb-2">
+            <div className="mb-2 flex flex-wrap gap-2">
               {[
                 { rotulo: 'Sex 13:52 (Pré-Desafio)', iso: '2026-11-20T13:52:00' },
                 { rotulo: 'Sáb 14:30 (Desafio Sáb)', iso: '2026-11-21T14:30:00' },
@@ -297,29 +301,29 @@ export const ModalConfiguracoesSync: React.FC<ModalConfiguracoesSyncProps> = ({
                     setSimIso(preset.iso);
                     ativarSimulacaoHorario(preset.iso);
                   }}
-                  className="rounded-lg border border-purple-500/30 bg-purple-500/10 px-2.5 py-1 text-[11px] font-medium text-purple-200 hover:bg-purple-500/20"
+                  className="rounded-lg border border-purple-300 bg-purple-50 px-2.5 py-1 text-[11px] font-bold text-purple-800 hover:bg-purple-100"
                 >
                   {preset.rotulo}
                 </button>
               ))}
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <input
                 type="datetime-local"
                 value={simIso}
                 onChange={(e) => setSimIso(e.target.value)}
-                className="flex-1 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-white"
+                className="flex-1 rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-3 py-2 text-xs font-semibold text-[#0A2E22]"
               />
               <button
                 onClick={() => ativarSimulacaoHorario(simIso)}
-                className="rounded-xl bg-purple-500 px-3 py-2 text-xs font-bold text-white hover:bg-purple-400"
+                className="rounded-xl bg-purple-600 px-3 py-2 text-xs font-bold text-white hover:bg-purple-700"
               >
                 Simular
               </button>
               {simulacaoHorario.ativo && (
                 <button
                   onClick={desativarSimulacaoHorario}
-                  className="rounded-xl bg-slate-800 px-3 py-2 text-xs font-semibold text-slate-200 hover:bg-slate-700"
+                  className="rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-3 py-2 text-xs font-bold text-[#0A3D2E] hover:bg-[#EFE8D8]"
                 >
                   Hora Real
                 </button>

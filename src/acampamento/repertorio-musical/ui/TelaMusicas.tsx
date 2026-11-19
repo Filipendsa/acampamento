@@ -80,43 +80,40 @@ export const TelaMusicas: React.FC<TelaMusicasProps> = ({ momentoFiltroInicial }
   };
 
   return (
-    <div className="space-y-4">
-      <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-        <h1 className="flex items-center gap-2 text-lg font-extrabold text-white">
-          <Music className="h-5 w-5 text-sky-400" />
+    <div className="space-y-4 animate-fade-slide-up">
+      <div className="card-camp rounded-3xl p-4">
+        <h1 className="flex items-center gap-2 text-lg font-black text-[#0A3D2E]">
+          <Music className="h-5 w-5 text-[#0369A1]" />
           Músicas do Acampamento (Editável na Hora)
         </h1>
-        <p className="mt-1 text-xs text-slate-400">
+        <p className="mt-1 text-xs font-medium text-[#4B5B53]">
           Organize as músicas por momento do itinerário (sem letras) e marque as que já foram
           tocadas. Funciona 100% offline.
         </p>
       </div>
 
-      {/* Adicionar Música na Hora */}
-      <form
-        onSubmit={handleAdicionar}
-        className="space-y-2.5 rounded-2xl border border-slate-800 bg-slate-900/90 p-4"
-      >
-        <h2 className="text-sm font-bold text-white">Adicionar Música</h2>
+      {/* Adicionar Música */}
+      <form onSubmit={handleAdicionar} className="card-camp space-y-2.5 rounded-3xl p-4">
+        <h2 className="text-sm font-black text-[#0A3D2E]">Adicionar Música</h2>
         <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
           <input
             type="text"
             value={titulo}
             onChange={(e) => setTitulo(e.target.value)}
             placeholder="Nome da música..."
-            className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-white placeholder-slate-500"
+            className="rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-3 py-2.5 text-sm font-medium text-[#0A2E22] placeholder-[#8B8574] focus:bg-white focus:outline-none"
           />
           <input
             type="text"
             value={interprete}
             onChange={(e) => setInterprete(e.target.value)}
             placeholder="Cantor / Tom / Link (opcional)"
-            className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-white placeholder-slate-500"
+            className="rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-3 py-2.5 text-sm font-medium text-[#0A2E22] placeholder-[#8B8574] focus:bg-white focus:outline-none"
           />
           <select
             value={momento}
             onChange={(e) => setMomento(e.target.value as MomentoMusical)}
-            className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 text-xs font-semibold text-white"
+            className="rounded-xl border border-[#D8CFBC] bg-white px-3 py-2.5 text-xs font-bold text-[#0A3D2E]"
           >
             {MOMENTOS_MUSICAIS.map((mom) => (
               <option key={mom} value={mom}>
@@ -129,13 +126,13 @@ export const TelaMusicas: React.FC<TelaMusicasProps> = ({ momentoFiltroInicial }
             value={observacao}
             onChange={(e) => setObservacao(e.target.value)}
             placeholder="Obs. (ex: violão, playback)"
-            className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-white placeholder-slate-500"
+            className="rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-3 py-2.5 text-sm font-medium text-[#0A2E22] placeholder-[#8B8574] focus:bg-white focus:outline-none"
           />
         </div>
-        {erro && <p className="text-xs text-rose-400">{erro}</p>}
+        {erro && <p className="text-xs font-semibold text-rose-600">{erro}</p>}
         <button
           type="submit"
-          className="inline-flex items-center gap-2 rounded-xl bg-sky-500 px-4 py-2.5 text-sm font-bold text-slate-950 hover:bg-sky-400"
+          className="inline-flex items-center gap-2 rounded-xl bg-[#0369A1] px-4 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:bg-[#0284C7] active:scale-[0.98]"
         >
           <Plus className="h-4 w-4" />
           Adicionar à Programação
@@ -146,10 +143,10 @@ export const TelaMusicas: React.FC<TelaMusicasProps> = ({ momentoFiltroInicial }
       <div className="flex flex-wrap gap-1.5">
         <button
           onClick={() => setFiltroMomento('TODOS')}
-          className={`rounded-xl px-3 py-1.5 text-xs font-bold ${
+          className={`rounded-xl px-3 py-1.5 text-xs font-extrabold transition ${
             filtroMomento === 'TODOS'
-              ? 'bg-sky-500 text-slate-950'
-              : 'border border-slate-800 bg-slate-900 text-slate-300'
+              ? 'bg-[#0369A1] text-white shadow-sm'
+              : 'border border-[#D8CFBC] bg-white text-[#0A3D2E] hover:bg-[#FAF6EA]'
           }`}
         >
           Todos ({repertorio.musicasAtivas.length})
@@ -160,10 +157,10 @@ export const TelaMusicas: React.FC<TelaMusicasProps> = ({ momentoFiltroInicial }
             <button
               key={mom}
               onClick={() => setFiltroMomento(mom)}
-              className={`rounded-xl px-3 py-1.5 text-xs font-semibold ${
+              className={`rounded-xl px-3 py-1.5 text-xs font-bold transition ${
                 filtroMomento === mom
-                  ? 'bg-sky-500 text-slate-950 font-bold'
-                  : 'border border-slate-800 bg-slate-900 text-slate-300'
+                  ? 'bg-[#0369A1] text-white shadow-sm'
+                  : 'border border-[#D8CFBC] bg-white text-[#0A3D2E] hover:bg-[#FAF6EA]'
               }`}
             >
               {mom} {qtd > 0 ? `(${qtd})` : ''}
@@ -175,7 +172,7 @@ export const TelaMusicas: React.FC<TelaMusicasProps> = ({ momentoFiltroInicial }
       {/* Lista */}
       <div className="space-y-2">
         {musicas.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-900/40 p-8 text-center text-xs text-slate-400">
+          <div className="rounded-3xl border-2 border-dashed border-[#D8CFBC] bg-white/70 p-8 text-center text-xs font-semibold text-[#5C6B64]">
             Nenhuma música cadastrada para este filtro ainda. Adicione acima na hora do acampamento!
           </div>
         ) : (
@@ -186,8 +183,8 @@ export const TelaMusicas: React.FC<TelaMusicasProps> = ({ momentoFiltroInicial }
                 key={m.id}
                 className={`rounded-2xl border p-3.5 transition ${
                   m.tocada
-                    ? 'border-emerald-500/30 bg-emerald-950/20 opacity-80'
-                    : 'border-slate-800 bg-slate-900/90'
+                    ? 'border-emerald-300 bg-[#ECFDF5] opacity-80'
+                    : 'card-camp card-camp-hover'
                 }`}
               >
                 {emEdicao ? (
@@ -196,19 +193,19 @@ export const TelaMusicas: React.FC<TelaMusicasProps> = ({ momentoFiltroInicial }
                       type="text"
                       value={editTitulo}
                       onChange={(e) => setEditTitulo(e.target.value)}
-                      className="rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-sm text-white"
+                      className="rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-2.5 py-1.5 text-sm font-medium text-[#0A2E22]"
                     />
                     <input
                       type="text"
                       value={editInterprete}
                       onChange={(e) => setEditInterprete(e.target.value)}
                       placeholder="Cantor / Tom"
-                      className="rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-sm text-white"
+                      className="rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-2.5 py-1.5 text-sm text-[#0A2E22]"
                     />
                     <select
                       value={editMomento}
                       onChange={(e) => setEditMomento(e.target.value as MomentoMusical)}
-                      className="rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-xs text-white"
+                      className="rounded-xl border border-[#D8CFBC] bg-white px-2.5 py-1.5 text-xs font-bold text-[#0A3D2E]"
                     >
                       {MOMENTOS_MUSICAIS.map((mom) => (
                         <option key={mom} value={mom}>
@@ -222,17 +219,17 @@ export const TelaMusicas: React.FC<TelaMusicasProps> = ({ momentoFiltroInicial }
                         value={editObs}
                         onChange={(e) => setEditObs(e.target.value)}
                         placeholder="Obs."
-                        className="flex-1 rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-sm text-white"
+                        className="flex-1 rounded-xl border border-[#D8CFBC] bg-[#FAF6EA] px-2.5 py-1.5 text-sm text-[#0A2E22]"
                       />
                       <button
                         onClick={() => salvarEdicao(m.id)}
-                        className="rounded-lg bg-emerald-500 px-3 py-1.5 text-xs font-bold text-emerald-950"
+                        className="rounded-xl bg-[#0E5A36] px-3 py-1.5 text-xs font-bold text-white"
                       >
                         <Check className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => setEditandoId(null)}
-                        className="rounded-lg bg-slate-800 px-2.5 py-1.5 text-xs text-slate-300"
+                        className="rounded-xl border border-[#D8CFBC] bg-white px-2.5 py-1.5 text-xs text-[#5C6B64]"
                       >
                         <X className="h-4 w-4" />
                       </button>
@@ -243,10 +240,10 @@ export const TelaMusicas: React.FC<TelaMusicasProps> = ({ momentoFiltroInicial }
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => alternarMusicaTocada(m.id)}
-                        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border transition ${
+                        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border-2 transition ${
                           m.tocada
-                            ? 'border-emerald-400 bg-emerald-400 text-emerald-950'
-                            : 'border-slate-600 bg-slate-950 text-transparent hover:border-slate-400'
+                            ? 'border-[#0E5A36] bg-[#0E5A36] text-white'
+                            : 'border-[#C8BDA3] bg-[#FAF6EA] text-transparent hover:border-[#0E5A36]'
                         }`}
                         aria-label="Marcar como tocada"
                       >
@@ -254,14 +251,14 @@ export const TelaMusicas: React.FC<TelaMusicasProps> = ({ momentoFiltroInicial }
                       </button>
                       <div>
                         <p
-                          className={`text-sm font-bold ${
-                            m.tocada ? 'line-through text-slate-400' : 'text-white'
+                          className={`text-sm font-extrabold ${
+                            m.tocada ? 'line-through text-[#5C6B64]' : 'text-[#0A3D2E]'
                           }`}
                         >
                           {m.titulo}
                         </p>
-                        <p className="text-xs text-slate-400">
-                          <span className="text-sky-300 font-semibold">{m.momento}</span>
+                        <p className="text-xs text-[#4B5B53]">
+                          <span className="font-bold text-[#0369A1]">{m.momento}</span>
                           {m.interpreteOuOrigem ? ` • ${m.interpreteOuOrigem}` : ''}
                           {m.observacao ? ` • ${m.observacao}` : ''}
                         </p>
@@ -271,14 +268,14 @@ export const TelaMusicas: React.FC<TelaMusicasProps> = ({ momentoFiltroInicial }
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => iniciarEdicao(m.id)}
-                        className="rounded-lg p-2 text-slate-400 hover:bg-slate-800 hover:text-white"
+                        className="rounded-lg p-2 text-[#5C6B64] hover:bg-[#FAF6EA] hover:text-[#0A3D2E]"
                         aria-label="Editar música"
                       >
                         <Edit3 className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => removerMusica(m.id)}
-                        className="rounded-lg p-2 text-slate-400 hover:bg-slate-800 hover:text-rose-400"
+                        className="rounded-lg p-2 text-[#5C6B64] hover:bg-rose-50 hover:text-[#C81E1E]"
                         aria-label="Remover música"
                       >
                         <Trash2 className="h-4 w-4" />

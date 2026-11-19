@@ -24,21 +24,21 @@ export const RoletaClassesWidget: React.FC = () => {
   };
 
   return (
-    <div className="rounded-2xl border border-amber-500/30 bg-slate-950/80 p-4">
+    <div className="rounded-2xl border-2 border-[#FACC15] bg-[#FEFCE8] p-4 shadow-md">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h4 className="flex items-center gap-2 text-sm font-bold text-amber-300">
-            <Dices className="h-4 w-4" />
+          <h4 className="flex items-center gap-2 text-sm font-black text-[#0A3D2E]">
+            <Dices className="h-4 w-4 text-[#EA580C]" />
             Roleta Digital das Classes (Estação 2)
           </h4>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs font-medium text-[#4B5B53]">
             Sorteie a classe da equipe direto pelo celular/notebook na hora da prova.
           </p>
         </div>
         <button
           onClick={girarRoleta}
           disabled={girando}
-          className="inline-flex items-center gap-2 rounded-xl bg-amber-400 px-4 py-2.5 text-sm font-extrabold text-slate-950 shadow-md hover:bg-amber-300 disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-xl bg-[#0A3D2E] px-4 py-2.5 text-sm font-extrabold text-[#FACC15] shadow-md transition hover:bg-[#0F533E] active:scale-[0.98] disabled:opacity-60"
         >
           <Sparkles className={`h-4 w-4 ${girando ? 'animate-spin' : ''}`} />
           {girando ? 'Sorteando...' : 'Girar Roleta'}
@@ -47,25 +47,24 @@ export const RoletaClassesWidget: React.FC = () => {
 
       {sorteada && (
         <div
-          className="mt-3 rounded-xl border p-3.5 transition-all"
+          className="mt-3 rounded-2xl border-2 bg-white p-4 shadow-sm transition-all animate-fade-slide-up"
           style={{
-            borderColor: `${sorteada.corHex}88`,
-            backgroundColor: `${sorteada.corHex}18`,
+            borderColor: sorteada.corHex,
           }}
         >
           <div className="flex items-center justify-between">
-            <span className="text-base font-extrabold text-white">
+            <span className="text-base font-black text-[#0A3D2E]">
               {sorteada.classe} ({sorteada.idade} anos)
             </span>
             <span
-              className="rounded-full px-2.5 py-0.5 text-[11px] font-bold text-white"
+              className="rounded-full px-3 py-0.5 text-[11px] font-extrabold text-white shadow-sm"
               style={{ backgroundColor: sorteada.corHex }}
             >
               {sorteada.classe}
             </span>
           </div>
-          <p className="mt-1 text-xs font-bold text-amber-200">{sorteada.temaPrincipal}</p>
-          <ul className="mt-2 space-y-1 text-xs text-slate-200">
+          <p className="mt-1 text-xs font-extrabold text-[#EA580C]">{sorteada.temaPrincipal}</p>
+          <ul className="mt-2 space-y-1 text-xs font-medium text-[#2C3E36]">
             {sorteada.detalhes.map((d, i) => (
               <li key={i}>• {d}</li>
             ))}

@@ -83,8 +83,8 @@ export default defineConfig({
         short_name: 'Acamp. Dorina',
         description:
           'Gestão Offline-First do Acampamento A Alegria de Ser Desbravador - Clube Dorina Azevedo (20 a 22/11/2026)',
-        theme_color: '#0b3b24',
-        background_color: '#071f13',
+        theme_color: '#0A3D2E',
+        background_color: '#FAF6EA',
         display: 'standalone',
         orientation: 'any',
         start_url: '/',

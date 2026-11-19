@@ -4,61 +4,75 @@ type SyncEventRecord = {
   [key: string]: unknown;
 };
 
-const REDIS_KEY = 'dorina:acampamento:2026:sync_events';
+// Armazenamento 100% gratuito:
+// 1. Opcionalmente persiste em um GitHub Gist privado/secreto se SYNC_GIST_ID + SYNC_GIST_TOKEN estiverem configurados (custo R$ 0).
+// 2. Fallback em memória da instância quando sem Gist configurado.
+const GIST_FILENAME = 'dorina-acampamento-sync.json';
 const inMemoryStore: SyncEventRecord[] = [];
 
-function getKvConfig(): { url: string; token: string } | null {
-  const url =
-    process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || '';
-  const token =
-    process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || '';
-  if (url && token) {
-    return { url: url.replace(/\/+$/, ''), token };
+function getGistConfig(): { gistId: string; token: string } | null {
+  const gistId = process.env.SYNC_GIST_ID || '';
+  const token = process.env.SYNC_GIST_TOKEN || '';
+  if (gistId && token) {
+    return { gistId, token };
   }
   return null;
 }
 
-async function kvLoadEvents(kv: { url: string; token: string }): Promise<SyncEventRecord[]> {
-  const res = await fetch(`${kv.url}/get/${encodeURIComponent(REDIS_KEY)}`, {
-    headers: { Authorization: `Bearer ${kv.token}` },
+async function gistLoadEvents(cfg: { gistId: string; token: string }): Promise<SyncEventRecord[]> {
+  const res = await fetch(`https://api.github.com/gists/${cfg.gistId}`, {
+    headers: {
+      Authorization: `Bearer ${cfg.token}`,
+      Accept: 'application/vnd.github+json',
+    },
   });
   if (!res.ok) return [];
-  const data = (await res.json()) as { result?: string | null };
-  if (!data.result) return [];
+  const data = (await res.json()) as {
+    files?: Record<string, { content?: string }>;
+  };
+  const content = data.files?.[GIST_FILENAME]?.content;
+  if (!content) return [];
   try {
-    const parsed = JSON.parse(data.result);
+    const parsed = JSON.parse(content);
     return Array.isArray(parsed) ? (parsed as SyncEventRecord[]) : [];
   } catch {
     return [];
   }
 }
 
-async function kvSaveEvents(
-  kv: { url: string; token: string },
+async function gistSaveEvents(
+  cfg: { gistId: string; token: string },
   events: SyncEventRecord[]
 ): Promise<void> {
-  await fetch(`${kv.url}/set/${encodeURIComponent(REDIS_KEY)}`, {
-    method: 'POST',
+  await fetch(`https://api.github.com/gists/${cfg.gistId}`, {
+    method: 'PATCH',
     headers: {
-      Authorization: `Bearer ${kv.token}`,
+      Authorization: `Bearer ${cfg.token}`,
+      Accept: 'application/vnd.github+json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(JSON.stringify(events)),
+    body: JSON.stringify({
+      files: {
+        [GIST_FILENAME]: {
+          content: JSON.stringify(events),
+        },
+      },
+    }),
   });
 }
 
 async function loadAllEvents(): Promise<SyncEventRecord[]> {
-  const kv = getKvConfig();
-  if (kv) {
-    return kvLoadEvents(kv);
+  const gist = getGistConfig();
+  if (gist) {
+    return gistLoadEvents(gist);
   }
   return inMemoryStore;
 }
 
 async function saveAllEvents(events: SyncEventRecord[]): Promise<void> {
-  const kv = getKvConfig();
-  if (kv) {
-    await kvSaveEvents(kv, events);
+  const gist = getGistConfig();
+  if (gist) {
+    await gistSaveEvents(gist, events);
     return;
   }
   inMemoryStore.length = 0;

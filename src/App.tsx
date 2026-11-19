@@ -96,48 +96,53 @@ const AcampamentoShell: React.FC = () => {
       id: 'pontuacao',
       rotulo: 'Pontuação',
       icone: sessao.isAdministrativa ? (
-        <Unlock className="h-5 w-5 text-amber-400" />
+        <Unlock className="h-5 w-5 text-[#EA580C]" />
       ) : (
-        <Lock className="h-5 w-5 text-amber-400" />
+        <Lock className="h-5 w-5 text-[#EA580C]" />
       ),
     },
   ];
 
   if (carregando) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-slate-950 text-slate-200 p-6">
-        <img src="/icons/icon.svg" alt="Dorina Azevedo" className="h-16 w-16 mb-3 animate-pulse" />
-        <p className="text-sm font-bold">Carregando base offline do Acampamento...</p>
+      <div className="bg-camp-daylight flex min-h-screen flex-col items-center justify-center p-6 text-[#0A3D2E]">
+        <img src="/icons/icon.svg" alt="Dorina Azevedo" className="mb-3 h-16 w-16 animate-bounce" />
+        <p className="text-sm font-extrabold">Carregando base offline do Acampamento...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 pb-20 lg:pb-6">
-      {/* Header Superior */}
-      <header className="sticky top-0 z-30 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md">
+    <div className="bg-camp-daylight min-h-screen pb-24 text-[#0A2E22] lg:pb-8">
+      {/* Header Verde Floresta Dorina com Faixa Dourada do Cartaz */}
+      <header className="sticky top-0 z-30 border-b-4 border-[#FACC15] bg-gradient-to-r from-[#0A3D2E] via-[#0F533E] to-[#0A3D2E] text-white shadow-lg">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-2.5">
-          <div className="flex items-center gap-2.5 min-w-0">
+          <div className="flex min-w-0 items-center gap-3">
             <img
               src="/icons/icon.svg"
               alt="Clube Dorina Azevedo"
-              className="h-9 w-9 shrink-0 rounded-xl"
+              className="h-10 w-10 shrink-0 rounded-xl border-2 border-[#FACC15] bg-white/10 shadow-sm"
             />
             <div className="min-w-0">
-              <p className="truncate text-sm font-extrabold text-white">
-                Dorina Azevedo • Campori Prep
-              </p>
-              <p className="truncate text-[11px] text-emerald-400 font-medium">
+              <div className="flex items-center gap-2">
+                <p className="truncate text-sm font-black tracking-wide text-white sm:text-base">
+                  DORINA AZEVEDO
+                </p>
+                <span className="hidden sm:inline-block rounded-md bg-[#FACC15] px-2 py-0.5 text-[10px] font-black uppercase text-[#0A3D2E]">
+                  Acampamento 2026
+                </span>
+              </div>
+              <p className="truncate text-[11px] font-semibold text-[#FDE047]">
                 A Alegria de Ser Desbravador • {sessao.nomeOperador}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex shrink-0 items-center gap-1.5">
             {installPrompt && (
               <button
                 onClick={handleInstalarPwa}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-500 px-3 py-1.5 text-xs font-extrabold text-emerald-950 hover:bg-emerald-400"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-[#FACC15] px-3 py-1.5 text-xs font-black text-[#0A3D2E] shadow-md transition hover:bg-[#fde047]"
               >
                 <Download className="h-3.5 w-3.5" />
                 <span className="hidden sm:inline">Baixar App</span>
@@ -145,26 +150,28 @@ const AcampamentoShell: React.FC = () => {
             )}
 
             <button
-              onClick={() => (syncStatus.endpointConfigured ? void sincronizarAgora() : setConfigAberto(true))}
-              className={`inline-flex items-center gap-1.5 rounded-xl border px-2.5 py-1.5 text-[11px] font-bold ${
+              onClick={() =>
+                syncStatus.endpointConfigured ? void sincronizarAgora() : setConfigAberto(true)
+              }
+              className={`inline-flex items-center gap-1.5 rounded-xl border px-2.5 py-1.5 text-[11px] font-bold transition ${
                 syncStatus.online
-                  ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
-                  : 'border-amber-500/30 bg-amber-500/10 text-amber-300'
+                  ? 'border-emerald-300/40 bg-white/10 text-emerald-100 hover:bg-white/20'
+                  : 'border-amber-300/60 bg-amber-400/20 text-amber-100'
               }`}
               title="Status Offline / Sincronização Pull & Push"
             >
               {syncStatus.syncing ? (
-                <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                <RefreshCw className="h-3.5 w-3.5 animate-spin text-[#FACC15]" />
               ) : syncStatus.online ? (
-                <Cloud className="h-3.5 w-3.5" />
+                <Cloud className="h-3.5 w-3.5 text-[#FACC15]" />
               ) : (
-                <CloudOff className="h-3.5 w-3.5" />
+                <CloudOff className="h-3.5 w-3.5 text-amber-300" />
               )}
               <span className="hidden sm:inline">
                 {syncStatus.online ? 'Online' : 'Offline'}
               </span>
               {syncStatus.pendingCount > 0 && (
-                <span className="rounded-full bg-amber-400 px-1.5 text-[10px] font-black text-slate-950">
+                <span className="rounded-full bg-[#FACC15] px-1.5 text-[10px] font-black text-[#0A3D2E]">
                   {syncStatus.pendingCount}
                 </span>
               )}
@@ -172,7 +179,7 @@ const AcampamentoShell: React.FC = () => {
 
             <button
               onClick={() => setConfigAberto(true)}
-              className="rounded-xl border border-slate-800 bg-slate-900 p-2 text-slate-300 hover:bg-slate-800 hover:text-white"
+              className="rounded-xl border border-white/20 bg-white/10 p-2 text-white transition hover:bg-white/20"
               aria-label="Configurações e Sincronização"
             >
               <Settings className="h-4 w-4" />
@@ -183,18 +190,18 @@ const AcampamentoShell: React.FC = () => {
 
       {/* Layout Principal: Sidebar no Notebook (lg+) + Conteúdo */}
       <div className="mx-auto flex max-w-7xl gap-6 px-3 pt-4 sm:px-4">
-        <aside className="hidden lg:block w-60 shrink-0">
-          <nav className="sticky top-20 space-y-1.5 rounded-2xl border border-slate-800 bg-slate-900/70 p-3">
+        <aside className="hidden w-60 shrink-0 lg:block">
+          <nav className="card-camp sticky top-20 space-y-1.5 rounded-3xl p-3">
             {navItems.map((item) => {
               const ativa = aba === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => setAba(item.id)}
-                  className={`flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-bold transition ${
+                  className={`flex w-full items-center gap-3 rounded-2xl px-3.5 py-2.5 text-sm font-extrabold transition active:scale-[0.98] ${
                     ativa
-                      ? 'bg-emerald-500 text-emerald-950 shadow-md'
-                      : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                      ? 'bg-[#0A3D2E] text-[#FACC15] shadow-md shadow-[#0A3D2E]/20'
+                      : 'text-[#2C3E36] hover:bg-[#FAF6EA] hover:text-[#0A3D2E]'
                   }`}
                 >
                   {item.icone}
@@ -203,12 +210,12 @@ const AcampamentoShell: React.FC = () => {
               );
             })}
 
-            <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950/70 p-3 text-[11px] text-slate-400">
-              <p className="flex items-center gap-1.5 font-bold text-amber-300">
-                <Trophy className="h-3.5 w-3.5" />
+            <div className="mt-4 rounded-2xl border border-[#E2DAC7] bg-[#FAF6EA] p-3 text-[11px] text-[#4B5B53]">
+              <p className="flex items-center gap-1.5 font-extrabold text-[#0A3D2E]">
+                <Trophy className="h-3.5 w-3.5 text-[#EA580C]" />
                 Modo Diretoria
               </p>
-              <p className="mt-1">
+              <p className="mt-1 font-medium">
                 {sessao.isAdministrativa
                   ? 'Diretoria Administrativa autenticada.'
                   : 'Pontuação restrita à Diretoria Administrativa.'}
@@ -218,7 +225,6 @@ const AcampamentoShell: React.FC = () => {
         </aside>
 
         <main className="min-w-0 flex-1 space-y-4">
-          {/* Central de Avisos no topo para nunca se perderem no horário */}
           <CentralAvisosBanner
             onAbrirManual={abrirManual}
             onAbrirMusicasMomento={abrirMusicasDoMomento}
@@ -249,8 +255,8 @@ const AcampamentoShell: React.FC = () => {
         </main>
       </div>
 
-      {/* Bottom Bar Mobile (< lg) */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-800 bg-slate-950/95 backdrop-blur-md lg:hidden">
+      {/* Bottom Bar Mobile (< lg) em Tema Claro */}
+      <nav className="fixed inset-x-0 bottom-0 z-40 border-t-2 border-[#E2DAC7] bg-white/95 shadow-[0_-4px_20px_rgba(10,61,46,0.08)] backdrop-blur-md lg:hidden">
         <div className="grid grid-cols-6">
           {navItems.map((item) => {
             const ativa = aba === item.id;
@@ -258,12 +264,14 @@ const AcampamentoShell: React.FC = () => {
               <button
                 key={item.id}
                 onClick={() => setAba(item.id)}
-                className={`flex flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-bold transition ${
-                  ativa ? 'text-emerald-400' : 'text-slate-400 hover:text-slate-200'
+                className={`flex flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-extrabold transition ${
+                  ativa
+                    ? 'text-[#0A3D2E] bg-[#FEF9C3]/70 border-t-2 border-[#0A3D2E]'
+                    : 'text-[#5C6B64] hover:text-[#0A3D2E]'
                 }`}
               >
                 {item.icone}
-                <span className="truncate max-w-full px-0.5">{item.rotulo}</span>
+                <span className="max-w-full truncate px-0.5">{item.rotulo}</span>
               </button>
             );
           })}

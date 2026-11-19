@@ -1,0 +1,250 @@
+import { UnidadeProps } from '../domain/Unidade';
+
+export const UNIDADES_OFICIAIS_SEED: UnidadeProps[] = [
+  {
+    id: 'unidade-1-harpia',
+    codigo: '1',
+    nome: 'HARPIA',
+    genero: 'FEMININO',
+    membros: [
+      {
+        id: 'p-elisa-ribeiro',
+        nome: 'ELISA RIBEIRO RODRIGUES',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-1-harpia',
+      },
+      {
+        id: 'p-evelly-marques',
+        nome: 'EVELLY MARQUES FERNANDES',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-1-harpia',
+      },
+      {
+        id: 'p-hellena-gabrielly',
+        nome: 'HELLENA GABRIELLY DE OLIVEIRA FARIA',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-1-harpia',
+      },
+      {
+        id: 'p-isabella-heloisa',
+        nome: 'ISABELLA HELOISA DO CARMO LANGER',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-1-harpia',
+      },
+      {
+        id: 'p-stella-heloisa',
+        nome: 'STELLA HELOISA DO CARMO LANGER',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-1-harpia',
+      },
+    ],
+  },
+  {
+    id: 'unidade-2-coruja',
+    codigo: '2',
+    nome: 'CORUJA',
+    genero: 'FEMININO',
+    membros: [
+      {
+        id: 'p-eliene-alves',
+        nome: 'ELIENE ALVES DA SILVA',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-2-coruja',
+      },
+      {
+        id: 'p-gabrielle-camargo',
+        nome: 'GABRIELLE CAMARGO TOLEDO',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-2-coruja',
+      },
+      {
+        id: 'p-gabrielle-nogueira',
+        nome: 'GABRIELLE NOGUEIRA DA SILVA',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-2-coruja',
+      },
+      {
+        id: 'p-livia-martins',
+        nome: 'LÍVIA MARTINS GOMES DA SILVA',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-2-coruja',
+      },
+      {
+        id: 'p-maria-laura',
+        nome: 'MARIA LAURA RODRIGUES PEREIRA',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-2-coruja',
+      },
+      {
+        id: 'p-rebecca-tomaz',
+        nome: 'REBECCA TOMAZ DE AQUINO QUADROS',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-2-coruja',
+      },
+    ],
+  },
+  {
+    id: 'unidade-3-aguia-dourada',
+    codigo: '3',
+    nome: 'ÁGUIA DOURADA',
+    genero: 'FEMININO',
+    membros: [
+      {
+        id: 'p-alice-teixeira',
+        nome: 'ALICE DA SILVA TEIXEIRA',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-3-aguia-dourada',
+      },
+      {
+        id: 'p-rayssa',
+        nome: 'Rayssa',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-3-aguia-dourada',
+      },
+      {
+        id: 'p-julia-magalhaes',
+        nome: 'JULIA MAGALHÃES PEREIRA',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-3-aguia-dourada',
+      },
+      {
+        id: 'p-juliana-rosa',
+        nome: 'JULIANA ROSA NASCIMENTO MENDES',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-3-aguia-dourada',
+      },
+      {
+        id: 'p-maria-fernanda',
+        nome: 'MARIA FERNANDA AGUILERA COSTA',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-3-aguia-dourada',
+      },
+      {
+        id: 'p-melissa-sarracini',
+        nome: 'MELISSA SARRACINI DE QUEIROZ',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-3-aguia-dourada',
+      },
+    ],
+  },
+  {
+    id: 'unidade-4-falcao-peregrino',
+    codigo: '4',
+    nome: 'FALCÃO PEREGRINO',
+    genero: 'FEMININO',
+    membros: [
+      {
+        id: 'p-isabela-bersanet',
+        nome: 'ISABELA BERSANET',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-4-falcao-peregrino',
+      },
+      {
+        id: 'p-jaqueline-teixeira',
+        nome: 'JAQUELINE DA SILVA TEIXEIRA',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-4-falcao-peregrino',
+      },
+      {
+        id: 'p-lara-parreira',
+        nome: 'LARA PARREIRA BORGES',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-4-falcao-peregrino',
+      },
+      {
+        id: 'p-melissa-rodrigues',
+        nome: 'MELISSA RODRIGUES DA SILVA',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-4-falcao-peregrino',
+      },
+    ],
+  },
+  {
+    id: 'unidade-1-aguia-real',
+    codigo: '1',
+    nome: 'AGUIA REAL',
+    genero: 'MASCULINO',
+    membros: [
+      {
+        id: 'p-bryan-parreira',
+        nome: 'BRYAN PARREIRA BORGES',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-1-aguia-real',
+      },
+      {
+        id: 'p-luciano-jose',
+        nome: 'LUCIANO JOSÉ DA SILVA',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-1-aguia-real',
+      },
+      {
+        id: 'p-matheus-rodriguez',
+        nome: 'MATHEUS RODRIGUEZ BERNARDES',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-1-aguia-real',
+      },
+      {
+        id: 'p-miguel-alves',
+        nome: 'MIGUEL ALVES DA SILVA',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-1-aguia-real',
+      },
+      {
+        id: 'p-rodrigo-domingues',
+        nome: 'RODRIGO DOMINGUES DOS SANTOS',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-1-aguia-real',
+      },
+      {
+        id: 'p-samuel-tomaz',
+        nome: 'SAMUEL TOMAZ',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-1-aguia-real',
+      },
+    ],
+  },
+  {
+    id: 'unidade-3-aguia-negra',
+    codigo: '3',
+    nome: 'ÁGUIA NEGRA',
+    genero: 'MASCULINO',
+    membros: [
+      {
+        id: 'p-antonio-carlos',
+        nome: 'ANTONIO CARLOS DOS SANTOS GUIMARÃES',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-3-aguia-negra',
+      },
+      {
+        id: 'p-gabriel-bersaneti',
+        nome: 'GABRIEL BERSANETI DE OLIVEIRA BRITO',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-3-aguia-negra',
+      },
+      {
+        id: 'p-kaleb-antonio',
+        nome: 'KALEB ANTÔNIO FERREIRA DA SILVA',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-3-aguia-negra',
+      },
+      {
+        id: 'p-kaua-valentim',
+        nome: 'KAUÃ VALENTIM DE OLIVEIRA',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-3-aguia-negra',
+      },
+      {
+        id: 'p-nicolas-oliveira',
+        nome: 'NICOLAS OLIVEIRA DO NASCIMENTO',
+        papel: 'DESBRAVADOR',
+        unidadeId: 'unidade-3-aguia-negra',
+      },
+      {
+        id: 'p-vinicius-souza',
+        nome: 'VINÍCIUS DE SOUZA ANDRADE',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-3-aguia-negra',
+      },
+    ],
+  },
+];

@@ -1,0 +1,7 @@
+node_modules
+dist
+.vercel
+*.tsbuildinfo
+server/sync-events.json
+.env
+.env.local

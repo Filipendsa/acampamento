@@ -1,0 +1,6 @@
+export type NivelPermissao = 'DIRETORIA_GERAL' | 'DIRETORIA_ADMINISTRATIVA';
+
+export const NIVEIS_PERMISSAO = {
+  GERAL: 'DIRETORIA_GERAL' as NivelPermissao,
+  ADMINISTRATIVA: 'DIRETORIA_ADMINISTRATIVA' as NivelPermissao,
+};

@@ -225,6 +225,16 @@ export const TelaProgramacao: React.FC<TelaProgramacaoProps> = ({
                   className="w-full rounded-2xl border-2 border-[#D8CFBC] shadow-md"
                 />
               </div>
+              <div className="space-y-1.5 md:col-span-2">
+                <p className="text-xs font-extrabold text-[#0A3D2E]">
+                  3. Ronda Noturna & Sanitarismo
+                </p>
+                <img
+                  src="/images/ronda-sanitarismo.jpg"
+                  alt="Escala de Ronda Noturna e Sanitarismo"
+                  className="w-full rounded-2xl border-2 border-[#D8CFBC] shadow-md"
+                />
+              </div>
             </div>
           </div>
         </div>

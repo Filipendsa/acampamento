@@ -4,11 +4,15 @@ import {
   CheckCircle2,
   ClipboardList,
   HeartPulse,
+  Lock,
   Plus,
   Search,
   ShieldAlert,
+  ShieldCheck,
+  X,
 } from 'lucide-react';
 import { useAcampamento } from '../../../application/AcampamentoStoreContext';
+import { ModalAutenticacaoAdmin } from '../../acesso-diretoria/ui/ModalAutenticacaoAdmin';
 import {
   GravidadeOcorrencia,
   StatusOcorrencia,
@@ -21,8 +25,13 @@ interface TelaOcorrenciasProps {
 }
 
 export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmPunicao }) => {
-  const { unidades, ocorrencias, registrarOcorrencia, atualizarStatusOcorrencia, sessao } =
-    useAcampamento();
+  const {
+    unidades,
+    ocorrenciasVisiveis,
+    registrarOcorrencia,
+    atualizarStatusOcorrencia,
+    sessao,
+  } = useAcampamento();
 
   const todosParticipantes = useMemo(
     () =>
@@ -47,6 +56,7 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
   const [erro, setErro] = useState<string | null>(null);
   const [filtroTexto, setFiltroTexto] = useState('');
   const [filtroTipo, setFiltroTipo] = useState<TipoOcorrencia | 'TODOS'>('TODOS');
+  const [modalAdminAberto, setModalAdminAberto] = useState(false);
 
   const participantesFiltrados = useMemo(() => {
     const q = buscaParticipante.trim().toLowerCase();
@@ -58,7 +68,7 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
 
   const ocorrenciasFiltradas = useMemo(() => {
     const q = filtroTexto.trim().toLowerCase();
-    return ocorrencias.filter((o) => {
+    return ocorrenciasVisiveis.filter((o) => {
       if (filtroTipo !== 'TODOS' && o.tipo !== filtroTipo) return false;
       if (!q) return true;
       return (
@@ -67,7 +77,7 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
         o.descricao.toLowerCase().includes(q)
       );
     });
-  }, [ocorrencias, filtroTexto, filtroTipo]);
+  }, [ocorrenciasVisiveis, filtroTexto, filtroTipo]);
 
   const handleRegistrar = (e: React.FormEvent) => {
     e.preventDefault();
@@ -200,6 +210,34 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
 
       {/* Filtros + Lista */}
       <div className="card-camp space-y-3 rounded-3xl p-4">
+        {/* Banner de Privacidade / Visibilidade (Autor + ADM) */}
+        {sessao.isAdministrativa ? (
+          <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-emerald-300 bg-emerald-50 px-3.5 py-2.5 text-xs text-emerald-900">
+            <span className="flex items-center gap-2 font-bold">
+              <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-700" />
+              Visão Administrativa Ativa: você está vendo todas as ocorrências registradas por toda
+              a diretoria.
+            </span>
+          </div>
+        ) : (
+          <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-[#FACC15] bg-[#FEFCE8] px-3.5 py-2.5 text-xs text-[#0A3D2E]">
+            <span className="flex items-center gap-2 font-semibold">
+              <Lock className="h-4 w-4 shrink-0 text-[#EA580C]" />
+              <span>
+                Visibilidade Privada: exibindo apenas ocorrências postadas por{' '}
+                <strong>{sessao.nomeOperador}</strong>. Todos os ADMs visualizam todas.
+              </span>
+            </span>
+            <button
+              type="button"
+              onClick={() => setModalAdminAberto(true)}
+              className="rounded-xl bg-[#0A3D2E] px-3 py-1.5 text-[11px] font-black text-[#FACC15] shadow-xs hover:bg-[#0F533E]"
+            >
+              Sou ADM (Desbloquear Todas)
+            </button>
+          </div>
+        )}
+
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-sm font-black text-[#0A3D2E]">
             Histórico de Ocorrências ({ocorrenciasFiltradas.length})
@@ -232,7 +270,9 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
 
         {ocorrenciasFiltradas.length === 0 ? (
           <p className="py-6 text-center text-xs font-medium text-[#5C6B64]">
-            Nenhuma ocorrência registrada até o momento.
+            {sessao.isAdministrativa
+              ? 'Nenhuma ocorrência registrada até o momento.'
+              : `Nenhuma ocorrência postada por "${sessao.nomeOperador}" até o momento.`}
           </p>
         ) : (
           <div className="space-y-2.5">
@@ -329,6 +369,22 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
           </div>
         )}
       </div>
+
+      {modalAdminAberto && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0A3D2E]/60 p-4 backdrop-blur-sm">
+          <div className="relative w-full max-w-md">
+            <button
+              type="button"
+              onClick={() => setModalAdminAberto(false)}
+              className="absolute right-3 top-3 z-10 rounded-xl p-1.5 text-[#5C6B64] hover:bg-[#EDE5D3] hover:text-[#0A3D2E]"
+              aria-label="Fechar"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            <ModalAutenticacaoAdmin onSucesso={() => setModalAdminAberto(false)} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

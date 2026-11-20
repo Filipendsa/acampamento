@@ -7,6 +7,7 @@ import {
   CloudOff,
   Download,
   Lock,
+  Moon,
   Music,
   RefreshCw,
   Settings,
@@ -21,10 +22,18 @@ import { CentralAvisosBanner } from './acampamento/programacao-e-avisos/ui/Centr
 import { TelaProgramacao } from './acampamento/programacao-e-avisos/ui/TelaProgramacao';
 import { TelaOcorrencias } from './acampamento/prontuario-ocorrencias/ui/TelaOcorrencias';
 import { TelaMusicas } from './acampamento/repertorio-musical/ui/TelaMusicas';
+import { TelaRondaSanitarismo } from './acampamento/ronda-e-sanitarismo/ui/TelaRondaSanitarismo';
 import { TelaManuaisCampori } from './acampamento/treinamento-campori/ui/TelaManuaisCampori';
 import { TelaUnidades } from './acampamento/unidades-e-desbravadores/ui/TelaUnidades';
 
-type AbaId = 'programacao' | 'manuais' | 'unidades' | 'ocorrencias' | 'musicas' | 'pontuacao';
+type AbaId =
+  | 'programacao'
+  | 'ronda-sanitarismo'
+  | 'manuais'
+  | 'unidades'
+  | 'ocorrencias'
+  | 'musicas'
+  | 'pontuacao';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -88,6 +97,7 @@ const AcampamentoShell: React.FC = () => {
     icone: React.ReactNode;
   }> = [
     { id: 'programacao', rotulo: 'Itinerário', icone: <Calendar className="h-5 w-5" /> },
+    { id: 'ronda-sanitarismo', rotulo: 'Ronda', icone: <Moon className="h-5 w-5" /> },
     { id: 'manuais', rotulo: 'Manuais', icone: <BookOpen className="h-5 w-5" /> },
     { id: 'unidades', rotulo: 'Unidades', icone: <Users className="h-5 w-5" /> },
     { id: 'ocorrencias', rotulo: 'Ocorrências', icone: <ClipboardList className="h-5 w-5" /> },
@@ -236,6 +246,7 @@ const AcampamentoShell: React.FC = () => {
               onAbrirMusicasMomento={abrirMusicasDoMomento}
             />
           )}
+          {aba === 'ronda-sanitarismo' && <TelaRondaSanitarismo />}
           {aba === 'manuais' && (
             <TelaManuaisCampori manualIdInicial={manualIdSelecionado} />
           )}
@@ -257,7 +268,7 @@ const AcampamentoShell: React.FC = () => {
 
       {/* Bottom Bar Mobile (< lg) em Tema Claro */}
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t-2 border-[#E2DAC7] bg-white/95 shadow-[0_-4px_20px_rgba(10,61,46,0.08)] backdrop-blur-md lg:hidden">
-        <div className="grid grid-cols-6">
+        <div className="grid grid-cols-7">
           {navItems.map((item) => {
             const ativa = aba === item.id;
             return (

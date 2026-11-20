@@ -43,7 +43,21 @@ export type SyncEventPayload =
   | { kind: 'MUSICA_REMOVIDA'; musicaId: string; atualizadaEm: string }
   | { kind: 'AVISO_PUBLICADO'; aviso: AvisoCentralProps }
   | { kind: 'AVISO_REMOVIDO'; avisoId: string }
-  | { kind: 'TEMPO_PISTA_FIO_REGISTRADO'; registro: TempoBateriaPistaFio };
+  | { kind: 'TEMPO_PISTA_FIO_REGISTRADO'; registro: TempoBateriaPistaFio }
+  | {
+      kind: 'RONDA_TURNO_ALTERNADO';
+      turnoId: string;
+      concluido: boolean;
+      concluidoPor?: string;
+      concluidoEm?: string;
+    }
+  | {
+      kind: 'SANITARISMO_ESCALA_ALTERNADA';
+      escalaId: string;
+      concluido: boolean;
+      concluidoPor?: string;
+      concluidoEm?: string;
+    };
 
 export interface SyncEvent {
   id: string;

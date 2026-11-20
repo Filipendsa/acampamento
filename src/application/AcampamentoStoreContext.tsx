@@ -6,7 +6,13 @@ import { ItinerarioAcampamento } from '../acampamento/programacao-e-avisos/domai
 import { PanoramaTemporalAcampamento, ServicoAlarmeHorario } from '../acampamento/programacao-e-avisos/domain/ServicoAlarmeHorario';
 import { ITINERARIO_OFICIAL_SEED } from '../acampamento/programacao-e-avisos/infrastructure/ItinerarioOficialSeed';
 import { OcorrenciaIndividual } from '../acampamento/prontuario-ocorrencias/domain/OcorrenciaIndividual';
+import { PoliticaVisibilidadeOcorrencia } from '../acampamento/prontuario-ocorrencias/domain/PoliticaVisibilidadeOcorrencia';
 import { GravidadeOcorrencia, StatusOcorrencia, TipoOcorrencia } from '../acampamento/prontuario-ocorrencias/domain/TipoOcorrencia';
+import { ControleRondaSanitarismo } from '../acampamento/ronda-e-sanitarismo/domain/ControleRondaSanitarismo';
+import {
+  RONDA_NOTURNA_OFICIAL_SEED,
+  SANITARISMO_OFICIAL_SEED,
+} from '../acampamento/ronda-e-sanitarismo/infrastructure/RondaSanitarismoOficialSeed';
 import { MomentoMusical, MusicaAcampamentoProps } from '../acampamento/repertorio-musical/domain/MusicaAcampamento';
 import { RepertorioAcampamento } from '../acampamento/repertorio-musical/domain/RepertorioAcampamento';
 import { ManualAtividade } from '../acampamento/treinamento-campori/domain/ManualAtividade';
@@ -44,6 +50,8 @@ function criarEstadoInicial(): EstadoAcampamentoPersistido {
     musicas: [],
     avisosManuais: [],
     temposPistaFio: [],
+    rondaChecks: {},
+    sanitarismoChecks: {},
   };
 }
 
@@ -101,7 +109,12 @@ interface AcampamentoContextValue {
   temposPistaFio: TempoBateriaPistaFio[];
   registrarTempoPistaFio: (equipeId: string, nomeEquipe: string, duracaoMs: number) => void;
 
+  controleRondaSanitarismo: ControleRondaSanitarismo;
+  alternarConclusaoRonda: (turnoId: string) => void;
+  alternarConclusaoSanitarismo: (escalaId: string) => void;
+
   ocorrencias: OcorrenciaIndividual[];
+  ocorrenciasVisiveis: OcorrenciaIndividual[];
   registrarOcorrencia: (dados: {
     participanteId: string;
     tipo: TipoOcorrencia;
@@ -346,6 +359,22 @@ export const AcampamentoStoreProvider: React.FC<{ children: React.ReactNode }> =
     [estado.ocorrencias]
   );
 
+  const ocorrenciasVisiveis = useMemo(
+    () => PoliticaVisibilidadeOcorrencia.filtrarVisiveis(ocorrencias, sessao, syncMeta.deviceId),
+    [ocorrencias, sessao, syncMeta.deviceId]
+  );
+
+  const controleRondaSanitarismo = useMemo(
+    () =>
+      ControleRondaSanitarismo.criar(
+        RONDA_NOTURNA_OFICIAL_SEED,
+        SANITARISMO_OFICIAL_SEED,
+        estado.rondaChecks ?? {},
+        estado.sanitarismoChecks ?? {}
+      ),
+    [estado.rondaChecks, estado.sanitarismoChecks]
+  );
+
   const placar = useMemo(
     () => PlacarUnidade.restaurar(estado.lancamentosPontuacao),
     [estado.lancamentosPontuacao]
@@ -529,6 +558,7 @@ export const AcampamentoStoreProvider: React.FC<{ children: React.ReactNode }> =
         descricao: dados.descricao,
         providencia: dados.providencia,
         registradoPor: sessaoRef.current.nomeOperador,
+        registradoPorDeviceId: metaRef.current.deviceId,
         criadoEm: new Date().toISOString(),
       });
 
@@ -542,6 +572,15 @@ export const AcampamentoStoreProvider: React.FC<{ children: React.ReactNode }> =
     (ocorrenciaId: string, status: StatusOcorrencia, providencia?: string) => {
       const alvo = ocorrencias.find((o) => o.id === ocorrenciaId);
       if (!alvo) return;
+      if (
+        !PoliticaVisibilidadeOcorrencia.podeAtualizarStatus(
+          alvo,
+          sessaoRef.current,
+          metaRef.current.deviceId
+        )
+      ) {
+        return;
+      }
       const agoraIso = new Date().toISOString();
       alvo.atualizarStatus(status, providencia, agoraIso);
       despacharEventoLocal({
@@ -709,6 +748,40 @@ export const AcampamentoStoreProvider: React.FC<{ children: React.ReactNode }> =
     [despacharEventoLocal]
   );
 
+  const alternarConclusaoRonda = useCallback(
+    (turnoId: string) => {
+      const alvo = controleRondaSanitarismo.obterTurnoRonda(turnoId);
+      if (!alvo) return;
+      const agoraIso = new Date().toISOString();
+      alvo.alternarConclusao(sessaoRef.current.nomeOperador, agoraIso);
+      despacharEventoLocal({
+        kind: 'RONDA_TURNO_ALTERNADO',
+        turnoId: alvo.id,
+        concluido: alvo.concluido,
+        concluidoPor: alvo.concluidoPor,
+        concluidoEm: alvo.concluidoEm,
+      });
+    },
+    [controleRondaSanitarismo, despacharEventoLocal]
+  );
+
+  const alternarConclusaoSanitarismo = useCallback(
+    (escalaId: string) => {
+      const alvo = controleRondaSanitarismo.obterEscalaSanitarismo(escalaId);
+      if (!alvo) return;
+      const agoraIso = new Date().toISOString();
+      alvo.alternarConclusao(sessaoRef.current.nomeOperador, agoraIso);
+      despacharEventoLocal({
+        kind: 'SANITARISMO_ESCALA_ALTERNADA',
+        escalaId: alvo.id,
+        concluido: alvo.concluido,
+        concluidoPor: alvo.concluidoPor,
+        concluidoEm: alvo.concluidoEm,
+      });
+    },
+    [controleRondaSanitarismo, despacharEventoLocal]
+  );
+
   // Sync Manual + Export/Import JSON
   const configurarEndpointSync = useCallback((url: string) => {
     const nextMeta: SyncMetaPersistida = {
@@ -783,7 +856,11 @@ export const AcampamentoStoreProvider: React.FC<{ children: React.ReactNode }> =
     manuais,
     temposPistaFio: estado.temposPistaFio,
     registrarTempoPistaFio,
+    controleRondaSanitarismo,
+    alternarConclusaoRonda,
+    alternarConclusaoSanitarismo,
     ocorrencias,
+    ocorrenciasVisiveis,
     registrarOcorrencia,
     atualizarStatusOcorrencia,
     placar,

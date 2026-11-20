@@ -5,6 +5,7 @@ import { MusicaAcampamentoProps } from '../../../acampamento/repertorio-musical/
 import { AliancaUnidadesProps } from '../../../acampamento/unidades-e-desbravadores/domain/AliancaUnidades';
 import { UnidadeProps } from '../../../acampamento/unidades-e-desbravadores/domain/Unidade';
 import { SessaoDiretoriaProps } from '../../../acampamento/acesso-diretoria/domain/SessaoDiretoria';
+import { CheckConclusaoItem } from '../../../acampamento/ronda-e-sanitarismo/domain/ControleRondaSanitarismo';
 import { SyncEvent, TempoBateriaPistaFio } from '../sync/SyncEvent';
 
 export interface EstadoAcampamentoPersistido {
@@ -16,6 +17,8 @@ export interface EstadoAcampamentoPersistido {
   musicas: MusicaAcampamentoProps[];
   avisosManuais: AvisoCentralProps[];
   temposPistaFio: TempoBateriaPistaFio[];
+  rondaChecks?: Record<string, CheckConclusaoItem>;
+  sanitarismoChecks?: Record<string, CheckConclusaoItem>;
 }
 
 export interface SyncMetaPersistida {

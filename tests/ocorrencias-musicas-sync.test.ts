@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import { SessaoDiretoria } from '../src/acampamento/acesso-diretoria/domain/SessaoDiretoria';
 import { OcorrenciaIndividual } from '../src/acampamento/prontuario-ocorrencias/domain/OcorrenciaIndividual';
+import { PoliticaVisibilidadeOcorrencia } from '../src/acampamento/prontuario-ocorrencias/domain/PoliticaVisibilidadeOcorrencia';
 import { RepertorioAcampamento } from '../src/acampamento/repertorio-musical/domain/RepertorioAcampamento';
 import { UNIDADES_OFICIAIS_SEED } from '../src/acampamento/unidades-e-desbravadores/infrastructure/UnidadesParticipantesSeed';
 import { EstadoAcampamentoPersistido, SyncMetaPersistida } from '../src/shared/infrastructure/persistence/IndexedDbStorage';
@@ -25,6 +27,54 @@ describe('Ocorrências, Repertório Musical e Sincronização Offline-First (Pul
     const events = oc.pullDomainEvents();
     expect(events).toHaveLength(1);
     expect(events[0].eventName).toBe('OcorrenciaComportamentoRegistrada');
+  });
+
+  it('exibe ocorrências apenas para quem postou e para todos os ADMs autenticados', () => {
+    const ocDani = OcorrenciaIndividual.registrar({
+      id: 'oc-dani',
+      participanteId: 'p-rayssa',
+      participanteNome: 'Rayssa',
+      unidadeId: 'unidade-3-aguia-dourada',
+      unidadeNome: '3_ÁGUIA DOURADA',
+      tipo: 'SAUDE',
+      gravidade: 'LEVE',
+      descricao: 'Dor de cabeça após o almoço.',
+      registradoPor: 'Dani',
+      registradoPorDeviceId: 'dev-dani',
+      criadoEm: '2026-11-20T13:10:00Z',
+    });
+
+    const ocFilipe = OcorrenciaIndividual.registrar({
+      id: 'oc-filipe',
+      participanteId: 'p-bryan-parreira',
+      participanteNome: 'BRYAN PARREIRA BORGES',
+      unidadeId: 'unidade-1-aguia-real',
+      unidadeNome: '1_AGUIA REAL',
+      tipo: 'COMPORTAMENTO',
+      gravidade: 'MODERADA',
+      descricao: 'Desrespeitou o conselheiro.',
+      registradoPor: 'Filipe',
+      registradoPorDeviceId: 'dev-filipe',
+      criadoEm: '2026-11-20T14:00:00Z',
+    });
+
+    const todas = [ocDani, ocFilipe];
+
+    // Dani vê apenas a que ela postou
+    const sessaoDani = SessaoDiretoria.iniciarPadrao('Dani');
+    const visiveisDani = PoliticaVisibilidadeOcorrencia.filtrarVisiveis(todas, sessaoDani, 'dev-dani');
+    expect(visiveisDani.map((o) => o.id)).toEqual(['oc-dani']);
+
+    // Marco (Diretoria Geral) não vê ocorrências de Dani nem de Filipe
+    const sessaoMarco = SessaoDiretoria.iniciarPadrao('Marco');
+    const visiveisMarco = PoliticaVisibilidadeOcorrencia.filtrarVisiveis(todas, sessaoMarco, 'dev-marco');
+    expect(visiveisMarco).toHaveLength(0);
+
+    // Qualquer ADM autenticado vê todas as ocorrências
+    const sessaoAdm = SessaoDiretoria.iniciarPadrao('Peck');
+    sessaoAdm.autenticarAdministrativa('#SouDorina2027', '2026-11-20T15:00:00Z');
+    const visiveisAdm = PoliticaVisibilidadeOcorrencia.filtrarVisiveis(todas, sessaoAdm, 'dev-peck');
+    expect(visiveisAdm.map((o) => o.id)).toEqual(['oc-dani', 'oc-filipe']);
   });
 
   it('permite adicionar, editar e marcar música como tocada na hora', () => {

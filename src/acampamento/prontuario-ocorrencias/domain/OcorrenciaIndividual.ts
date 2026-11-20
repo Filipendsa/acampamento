@@ -14,6 +14,7 @@ export interface OcorrenciaIndividualProps {
   descricao: string;
   providencia?: string;
   registradoPor: string;
+  registradoPorDeviceId?: string;
   criadoEm: string;
   atualizadoEm: string;
 }
@@ -29,6 +30,7 @@ export class OcorrenciaIndividual extends AggregateRoot<string> {
   public readonly descricao: string;
   private _providencia?: string;
   public readonly registradoPor: string;
+  public readonly registradoPorDeviceId?: string;
   public readonly criadoEm: string;
   private _atualizadoEm: string;
 
@@ -44,6 +46,7 @@ export class OcorrenciaIndividual extends AggregateRoot<string> {
     this.descricao = props.descricao;
     this._providencia = props.providencia;
     this.registradoPor = props.registradoPor;
+    this.registradoPorDeviceId = props.registradoPorDeviceId;
     this.criadoEm = props.criadoEm;
     this._atualizadoEm = props.atualizadoEm;
   }
@@ -121,6 +124,7 @@ export class OcorrenciaIndividual extends AggregateRoot<string> {
       descricao: this.descricao,
       providencia: this._providencia,
       registradoPor: this.registradoPor,
+      registradoPorDeviceId: this.registradoPorDeviceId,
       criadoEm: this.criadoEm,
       atualizadoEm: this._atualizadoEm,
     };

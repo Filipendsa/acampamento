@@ -46,6 +46,8 @@ export function aplicarSyncEventNoEstado(
     musicas: [...estado.musicas],
     avisosManuais: [...estado.avisosManuais],
     temposPistaFio: [...estado.temposPistaFio],
+    rondaChecks: { ...(estado.rondaChecks ?? {}) },
+    sanitarismoChecks: { ...(estado.sanitarismoChecks ?? {}) },
   };
 
   const payload = event.payload;
@@ -180,6 +182,30 @@ export function aplicarSyncEventNoEstado(
       if (!next.temposPistaFio.some((t) => t.id === payload.registro.id)) {
         next.temposPistaFio.push(payload.registro);
       }
+      break;
+    }
+
+    case 'RONDA_TURNO_ALTERNADO': {
+      next.rondaChecks = {
+        ...(next.rondaChecks ?? {}),
+        [payload.turnoId]: {
+          concluido: payload.concluido,
+          concluidoPor: payload.concluidoPor,
+          concluidoEm: payload.concluidoEm,
+        },
+      };
+      break;
+    }
+
+    case 'SANITARISMO_ESCALA_ALTERNADA': {
+      next.sanitarismoChecks = {
+        ...(next.sanitarismoChecks ?? {}),
+        [payload.escalaId]: {
+          concluido: payload.concluido,
+          concluidoPor: payload.concluidoPor,
+          concluidoEm: payload.concluidoEm,
+        },
+      };
       break;
     }
   }

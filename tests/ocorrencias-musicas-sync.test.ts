@@ -77,6 +77,35 @@ describe('Ocorrências, Repertório Musical e Sincronização Offline-First (Pul
     expect(visiveisAdm.map((o) => o.id)).toEqual(['oc-dani', 'oc-filipe']);
   });
 
+  it('permite ocorrência GERAL sem pessoa específica e restringe exclusão apenas à ADM', () => {
+    const ocGeral = OcorrenciaIndividual.registrar({
+      id: 'oc-geral-1',
+      participanteId: 'ocorrencia-geral',
+      participanteNome: 'GERAL (Ocorrência Geral)',
+      unidadeId: 'geral',
+      unidadeNome: 'GERAL',
+      tipo: 'OBSERVACAO',
+      gravidade: 'MODERADA',
+      descricao: 'Faltou água no banheiro masculino à noite.',
+      registradoPor: 'Dani',
+      registradoPorDeviceId: 'dev-dani',
+      criadoEm: '2026-11-20T22:00:00Z',
+    });
+
+    expect(ocGeral.unidadeNome).toBe('GERAL');
+
+    const sessaoDani = SessaoDiretoria.iniciarPadrao('Dani');
+    expect(PoliticaVisibilidadeOcorrencia.podeExcluir(sessaoDani)).toBe(false);
+    expect(() => PoliticaVisibilidadeOcorrencia.exigirAdminParaExcluir(sessaoDani)).toThrowError(
+      /Diretoria Administrativa/i
+    );
+
+    const sessaoAdm = SessaoDiretoria.iniciarPadrao('Filipe');
+    sessaoAdm.autenticarAdministrativa('#SouDorina2027', '2026-11-20T22:05:00Z');
+    expect(PoliticaVisibilidadeOcorrencia.podeExcluir(sessaoAdm)).toBe(true);
+    expect(() => PoliticaVisibilidadeOcorrencia.exigirAdminParaExcluir(sessaoAdm)).not.toThrow();
+  });
+
   it('permite adicionar, editar e marcar música como tocada na hora', () => {
     const rep = RepertorioAcampamento.restaurar([]);
     const m = rep.adicionarMusica({

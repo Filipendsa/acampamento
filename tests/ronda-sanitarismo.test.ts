@@ -10,25 +10,25 @@ import { aplicarSyncEventNoEstado } from '../src/shared/infrastructure/sync/Sync
 import { SyncEvent } from '../src/shared/infrastructure/sync/SyncEvent';
 
 describe('Domínio de Ronda Noturna & Sanitarismo', () => {
-  it('carrega os 12 turnos da Ronda Noturna e as 6 escalas de Sanitarismo do cartaz oficial', () => {
+  it('carrega os 8 turnos da Ronda Noturna (Sexta e Sábado) e as 3 escalas de Sanitarismo do cartaz oficial', () => {
     const controle = ControleRondaSanitarismo.criar(
       RONDA_NOTURNA_OFICIAL_SEED,
       SANITARISMO_OFICIAL_SEED
     );
 
-    expect(controle.turnosRonda).toHaveLength(12);
-    expect(controle.escalasSanitarismo).toHaveLength(6);
+    expect(controle.turnosRonda).toHaveLength(8);
+    expect(controle.escalasSanitarismo).toHaveLength(3);
 
-    const turnosFilipe = controle.turnosRonda.filter((t) => t.pertenceAoOperador('Filipe'));
-    expect(turnosFilipe.map((t) => t.id)).toEqual(['ronda-d1-23h', 'ronda-d3-05h']);
+    const turnosEliene = controle.turnosRonda.filter((t) => t.pertenceAoOperador('Eliene'));
+    expect(turnosEliene.map((t) => t.id)).toEqual(['ronda-sex-01h']);
 
-    const escalasPeck = controle.escalasSanitarismo.filter((e) => e.pertenceAoOperador('Peck'));
-    expect(escalasPeck).toHaveLength(2);
+    const escalasEliene = controle.escalasSanitarismo.filter((e) => e.pertenceAoOperador('Eliene'));
+    expect(escalasEliene.map((e) => e.id)).toEqual(['san-sexta-1940']);
   });
 
   it('alterna conclusão de ronda e sanitarismo e converge via SyncEvent', () => {
     const estadoInicial: EstadoAcampamentoPersistido = {
-      versaoSchema: 1,
+      versaoSchema: 2,
       unidades: UNIDADES_OFICIAIS_SEED,
       aliancas: [],
       lancamentosPontuacao: [],
@@ -44,13 +44,13 @@ describe('Domínio de Ronda Noturna & Sanitarismo', () => {
     const evtRonda: SyncEvent = {
       id: 'evt-ronda-1',
       deviceId: 'dev-1',
-      author: 'Filipe',
+      author: 'Evelly',
       createdAt: '2026-11-20T23:05:00Z',
       payload: {
         kind: 'RONDA_TURNO_ALTERNADO',
-        turnoId: 'ronda-d1-23h',
+        turnoId: 'ronda-sex-23h',
         concluido: true,
-        concluidoPor: 'Filipe',
+        concluidoPor: 'Evelly',
         concluidoEm: '2026-11-20T23:05:00Z',
       },
     };
@@ -58,14 +58,14 @@ describe('Domínio de Ronda Noturna & Sanitarismo', () => {
     const evtSanit: SyncEvent = {
       id: 'evt-sanit-1',
       deviceId: 'dev-2',
-      author: 'Dani',
-      createdAt: '2026-11-20T12:55:00Z',
+      author: 'Eliene',
+      createdAt: '2026-11-20T19:50:00Z',
       payload: {
         kind: 'SANITARISMO_ESCALA_ALTERNADA',
-        escalaId: 'san-sexta-1245',
+        escalaId: 'san-sexta-1940',
         concluido: true,
-        concluidoPor: 'Dani',
-        concluidoEm: '2026-11-20T12:55:00Z',
+        concluidoPor: 'Eliene',
+        concluidoEm: '2026-11-20T19:50:00Z',
       },
     };
 
@@ -79,9 +79,9 @@ describe('Domínio de Ronda Noturna & Sanitarismo', () => {
       next.sanitarismoChecks
     );
 
-    expect(controle.obterTurnoRonda('ronda-d1-23h')?.concluido).toBe(true);
-    expect(controle.obterTurnoRonda('ronda-d1-23h')?.concluidoPor).toBe('Filipe');
-    expect(controle.obterEscalaSanitarismo('san-sexta-1245')?.concluido).toBe(true);
-    expect(controle.obterEscalaSanitarismo('san-sexta-1245')?.concluidoPor).toBe('Dani');
+    expect(controle.obterTurnoRonda('ronda-sex-23h')?.concluido).toBe(true);
+    expect(controle.obterTurnoRonda('ronda-sex-23h')?.concluidoPor).toBe('Evelly');
+    expect(controle.obterEscalaSanitarismo('san-sexta-1940')?.concluido).toBe(true);
+    expect(controle.obterEscalaSanitarismo('san-sexta-1940')?.concluidoPor).toBe('Eliene');
   });
 });

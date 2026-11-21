@@ -24,7 +24,7 @@ describe('Domínio de Pontuação, Punições e Segurança Administrativa', () =
 
     sessao.autenticarAdministrativa('#SouDorina2027', '2026-11-20T10:01:00Z');
     expect(sessao.isAdministrativa).toBe(true);
-    expect(placar.calcularRanking(sessao, equipes)).toHaveLength(6);
+    expect(placar.calcularRanking(sessao, equipes)).toHaveLength(8);
   });
 
   it('suporta pontuação livre, normaliza punições como negativas e observações como 0 pontos', () => {

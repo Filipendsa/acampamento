@@ -1,3 +1,4 @@
+import { DomainError } from '../../../shared/domain/DomainError';
 import { SessaoDiretoria } from '../../acesso-diretoria/domain/SessaoDiretoria';
 import { OcorrenciaIndividual } from './OcorrenciaIndividual';
 
@@ -44,5 +45,18 @@ export class PoliticaVisibilidadeOcorrencia {
     deviceIdAtual?: string
   ): boolean {
     return this.podeVisualizar(ocorrencia, sessao, deviceIdAtual);
+  }
+
+  public static podeExcluir(sessao: SessaoDiretoria): boolean {
+    return sessao.isAdministrativa;
+  }
+
+  public static exigirAdminParaExcluir(sessao: SessaoDiretoria): void {
+    if (!this.podeExcluir(sessao)) {
+      throw new DomainError(
+        'EXCLUSAO_OCORRENCIA_NEGADA',
+        'Somente a Diretoria Administrativa (ADM) pode excluir ocorrências.'
+      );
+    }
   }
 }

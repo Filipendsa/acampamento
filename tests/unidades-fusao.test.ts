@@ -7,10 +7,10 @@ import { UNIDADES_OFICIAIS_SEED } from '../src/acampamento/unidades-e-desbravado
 describe('Domínio de Unidades, Desbravadores e Fusão por Gênero', () => {
   const unidades = UNIDADES_OFICIAIS_SEED.map((u) => Unidade.criar(u));
 
-  it('carrega as 6 unidades oficiais e os 33 participantes confirmados', () => {
-    expect(unidades).toHaveLength(6);
+  it('carrega as 8 unidades oficiais e os 44 participantes confirmados', () => {
+    expect(unidades).toHaveLength(8);
     const total = unidades.reduce((acc, u) => acc + u.membros.length, 0);
-    expect(total).toBe(33);
+    expect(total).toBe(44);
   });
 
   it('permite unir unidades femininas entre si e masculinas entre si', () => {
@@ -26,7 +26,7 @@ describe('Domínio de Unidades, Desbravadores e Fusão por Gênero', () => {
     expect(aliancaMasc.genero).toBe('MASCULINO');
 
     const equipes = RegraFusaoUnidades.resolverEquipesOperacionais(unidades, [aliancaFem, aliancaMasc]);
-    expect(equipes).toHaveLength(4); // 2 alianças + 2 unidades femininas ainda separadas
+    expect(equipes).toHaveLength(6); // 2 alianças + 4 unidades ainda separadas
   });
 
   it('bloqueia estritamente a união de unidade masculina com feminina', () => {

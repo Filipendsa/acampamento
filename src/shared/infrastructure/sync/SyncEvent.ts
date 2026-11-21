@@ -28,6 +28,7 @@ export type SyncEventPayload =
       providencia?: string;
       atualizadoEm: string;
     }
+  | { kind: 'OCORRENCIA_REMOVIDA'; ocorrenciaId: string }
   | { kind: 'LANCAMENTO_PONTUACAO'; lancamento: LancamentoPontuacaoProps }
   | { kind: 'LANCAMENTO_REMOVIDO'; lancamentoId: string }
   | { kind: 'MUSICA_ADICIONADA'; musica: MusicaAcampamentoProps }

@@ -118,6 +118,11 @@ export function aplicarSyncEventNoEstado(
       break;
     }
 
+    case 'OCORRENCIA_REMOVIDA': {
+      next.ocorrencias = next.ocorrencias.filter((o) => o.id !== payload.ocorrenciaId);
+      break;
+    }
+
     case 'LANCAMENTO_PONTUACAO': {
       if (!next.lancamentosPontuacao.some((l) => l.id === payload.lancamento.id)) {
         next.lancamentosPontuacao.unshift(payload.lancamento);

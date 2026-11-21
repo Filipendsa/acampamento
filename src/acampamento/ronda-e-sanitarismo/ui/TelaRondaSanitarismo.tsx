@@ -160,7 +160,7 @@ export const TelaRondaSanitarismo: React.FC = () => {
             </h2>
           </div>
 
-          <div className="grid gap-3 lg:grid-cols-3">
+          <div className="grid gap-3 md:grid-cols-3">
             {gruposRonda.map(([diaNum, turnos]) => {
               const primeiro = turnos[0];
               const estilo = COR_DIA_RONDA[primeiro.corTema];
@@ -248,7 +248,7 @@ export const TelaRondaSanitarismo: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid gap-3 md:grid-cols-2">
+          <div className="grid gap-3 md:grid-cols-3">
             {gruposSanitarismo.map(([rotuloDia, escalas]) => {
               const resp = escalas[0]?.responsaveisDiretoria ?? '';
               return (

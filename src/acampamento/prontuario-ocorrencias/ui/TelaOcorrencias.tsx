@@ -9,6 +9,7 @@ import {
   Search,
   ShieldAlert,
   ShieldCheck,
+  Trash2,
   X,
 } from 'lucide-react';
 import { useAcampamento } from '../../../application/AcampamentoStoreContext';
@@ -30,12 +31,20 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
     ocorrenciasVisiveis,
     registrarOcorrencia,
     atualizarStatusOcorrencia,
+    removerOcorrencia,
     sessao,
   } = useAcampamento();
 
   const todosParticipantes = useMemo(
-    () =>
-      unidades.flatMap((u) =>
+    () => [
+      {
+        id: 'ocorrencia-geral',
+        nome: 'GERAL — Ocorrência Geral (Sem pessoa específica)',
+        papel: 'GERAL' as const,
+        unidadeId: 'geral',
+        unidadeNome: 'GERAL',
+      },
+      ...unidades.flatMap((u) =>
         u.membros.map((m) => ({
           id: m.id,
           nome: m.nome,
@@ -44,6 +53,7 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
           unidadeNome: u.nomeExibicao,
         }))
       ),
+    ],
     [unidades]
   );
 
@@ -139,7 +149,9 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
             >
               {participantesFiltrados.map((p) => (
                 <option key={p.id} value={p.id}>
-                  {p.nome} — {p.unidadeNome} {p.papel === 'DIRETORIA' ? '(Diretoria)' : ''}
+                  {p.id === 'ocorrencia-geral'
+                    ? p.nome
+                    : `${p.nome} — ${p.unidadeNome} ${p.papel === 'DIRETORIA' ? '(Diretoria)' : ''}`}
                 </option>
               ))}
             </select>
@@ -321,23 +333,37 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
                     </p>
                   </div>
 
-                  <select
-                    value={oc.status}
-                    onChange={(e) =>
-                      atualizarStatusOcorrencia(oc.id, e.target.value as StatusOcorrencia)
-                    }
-                    className={`rounded-xl border px-2.5 py-1 text-[11px] font-extrabold ${
-                      oc.status === 'RESOLVIDA'
-                        ? 'border-emerald-300 bg-emerald-100 text-emerald-800'
-                        : oc.status === 'ACOMPANHANDO'
-                        ? 'border-amber-300 bg-amber-100 text-amber-900'
-                        : 'border-rose-300 bg-rose-100 text-rose-800'
-                    }`}
-                  >
-                    <option value="ABERTA">Aberta</option>
-                    <option value="ACOMPANHANDO">Acompanhando</option>
-                    <option value="RESOLVIDA">Resolvida</option>
-                  </select>
+                  <div className="flex items-center gap-1.5">
+                    <select
+                      value={oc.status}
+                      onChange={(e) =>
+                        atualizarStatusOcorrencia(oc.id, e.target.value as StatusOcorrencia)
+                      }
+                      className={`rounded-xl border px-2.5 py-1 text-[11px] font-extrabold ${
+                        oc.status === 'RESOLVIDA'
+                          ? 'border-emerald-300 bg-emerald-100 text-emerald-800'
+                          : oc.status === 'ACOMPANHANDO'
+                          ? 'border-amber-300 bg-amber-100 text-amber-900'
+                          : 'border-rose-300 bg-rose-100 text-rose-800'
+                      }`}
+                    >
+                      <option value="ABERTA">Aberta</option>
+                      <option value="ACOMPANHANDO">Acompanhando</option>
+                      <option value="RESOLVIDA">Resolvida</option>
+                    </select>
+
+                    {sessao.isAdministrativa && (
+                      <button
+                        type="button"
+                        onClick={() => removerOcorrencia(oc.id)}
+                        className="rounded-xl border border-rose-200 bg-white p-1.5 text-rose-600 transition hover:bg-rose-50 hover:text-rose-800"
+                        title="Excluir ocorrência (Somente ADM)"
+                        aria-label="Excluir ocorrência"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <p className="text-sm font-medium text-[#0A2E22]">{oc.descricao}</p>
@@ -350,6 +376,7 @@ export const TelaOcorrencias: React.FC<TelaOcorrenciasProps> = ({ onConverterEmP
 
                 {sessao.isAdministrativa &&
                   oc.tipo === 'COMPORTAMENTO' &&
+                  oc.unidadeId !== 'geral' &&
                   onConverterEmPunicao && (
                     <button
                       onClick={() =>

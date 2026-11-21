@@ -42,7 +42,7 @@ function gerarId(prefixo: string): string {
 
 function criarEstadoInicial(): EstadoAcampamentoPersistido {
   return {
-    versaoSchema: 1,
+    versaoSchema: 2,
     unidades: UNIDADES_OFICIAIS_SEED,
     aliancas: [],
     lancamentosPontuacao: [],
@@ -52,6 +52,35 @@ function criarEstadoInicial(): EstadoAcampamentoPersistido {
     temposPistaFio: [],
     rondaChecks: {},
     sanitarismoChecks: {},
+  };
+}
+
+function migrarUnidadesParaSeedOficial(estadoSalvo: EstadoAcampamentoPersistido): EstadoAcampamentoPersistido {
+  if ((estadoSalvo.versaoSchema ?? 1) >= 2) return estadoSalvo;
+
+  const unidadesPorId = new Map(estadoSalvo.unidades.map((u) => [u.id, u]));
+  const unidadesAtualizadas = UNIDADES_OFICIAIS_SEED.map((seedU) => {
+    const existente = unidadesPorId.get(seedU.id);
+    if (!existente) return seedU;
+    const idsSeed = new Set(seedU.membros.map((m) => m.id));
+    const extrasManuais = existente.membros.filter((m) => !idsSeed.has(m.id));
+    return {
+      ...seedU,
+      membros: [...seedU.membros, ...extrasManuais],
+    };
+  });
+
+  const idsOficiais = new Set(UNIDADES_OFICIAIS_SEED.map((u) => u.id));
+  for (const u of estadoSalvo.unidades) {
+    if (!idsOficiais.has(u.id)) {
+      unidadesAtualizadas.push(u);
+    }
+  }
+
+  return {
+    ...estadoSalvo,
+    versaoSchema: 2,
+    unidades: unidadesAtualizadas,
   };
 }
 
@@ -127,6 +156,7 @@ interface AcampamentoContextValue {
     status: StatusOcorrencia,
     providencia?: string
   ) => void;
+  removerOcorrencia: (ocorrenciaId: string) => void;
 
   placar: PlacarUnidade;
   rankingEquipes: ResumoRankingEquipe[];
@@ -205,7 +235,11 @@ export const AcampamentoStoreProvider: React.FC<{ children: React.ReactNode }> =
       if (!ativo) return;
 
       if (estadoSalvo) {
-        setEstado(estadoSalvo);
+        const migrado = migrarUnidadesParaSeedOficial(estadoSalvo);
+        setEstado(migrado);
+        if (migrado !== estadoSalvo) {
+          await AcampamentoLocalStorage.salvarEstado(migrado);
+        }
       } else {
         const inicial = criarEstadoInicial();
         setEstado(inicial);
@@ -535,24 +569,29 @@ export const AcampamentoStoreProvider: React.FC<{ children: React.ReactNode }> =
       descricao: string;
       providencia?: string;
     }) => {
+      const ehGeral = dados.participanteId === 'ocorrencia-geral';
       let participanteEncontrado: Participante | undefined;
       let unidadeEncontrada: Unidade | undefined;
 
-      for (const u of unidades) {
-        const m = u.membros.find((x) => x.id === dados.participanteId);
-        if (m) {
-          participanteEncontrado = m;
-          unidadeEncontrada = u;
-          break;
+      if (!ehGeral) {
+        for (const u of unidades) {
+          const m = u.membros.find((x) => x.id === dados.participanteId);
+          if (m) {
+            participanteEncontrado = m;
+            unidadeEncontrada = u;
+            break;
+          }
         }
       }
 
       const nova = OcorrenciaIndividual.registrar({
         id: gerarId('ocorr'),
-        participanteId: participanteEncontrado?.id ?? '',
-        participanteNome: participanteEncontrado?.nome ?? '',
-        unidadeId: unidadeEncontrada?.id ?? '',
-        unidadeNome: unidadeEncontrada?.nomeExibicao ?? '',
+        participanteId: ehGeral ? 'ocorrencia-geral' : participanteEncontrado?.id ?? '',
+        participanteNome: ehGeral
+          ? 'GERAL (Ocorrência Geral)'
+          : participanteEncontrado?.nome ?? '',
+        unidadeId: ehGeral ? 'geral' : unidadeEncontrada?.id ?? '',
+        unidadeNome: ehGeral ? 'GERAL' : unidadeEncontrada?.nomeExibicao ?? '',
         tipo: dados.tipo,
         gravidade: dados.gravidade,
         descricao: dados.descricao,
@@ -592,6 +631,17 @@ export const AcampamentoStoreProvider: React.FC<{ children: React.ReactNode }> =
       });
     },
     [ocorrencias, despacharEventoLocal]
+  );
+
+  const removerOcorrencia = useCallback(
+    (ocorrenciaId: string) => {
+      PoliticaVisibilidadeOcorrencia.exigirAdminParaExcluir(sessaoRef.current);
+      despacharEventoLocal({
+        kind: 'OCORRENCIA_REMOVIDA',
+        ocorrenciaId,
+      });
+    },
+    [despacharEventoLocal]
   );
 
   // Ações de Pontuação (Restritas à Diretoria Administrativa)
@@ -863,6 +913,7 @@ export const AcampamentoStoreProvider: React.FC<{ children: React.ReactNode }> =
     ocorrenciasVisiveis,
     registrarOcorrencia,
     atualizarStatusOcorrencia,
+    removerOcorrencia,
     placar,
     rankingEquipes,
     registrarLancamentoPontuacao,

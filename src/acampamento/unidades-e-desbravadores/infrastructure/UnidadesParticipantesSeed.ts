@@ -96,12 +96,6 @@ export const UNIDADES_OFICIAIS_SEED: UnidadeProps[] = [
         unidadeId: 'unidade-3-aguia-dourada',
       },
       {
-        id: 'p-rayssa',
-        nome: 'Rayssa',
-        papel: 'DESBRAVADOR',
-        unidadeId: 'unidade-3-aguia-dourada',
-      },
-      {
         id: 'p-julia-magalhaes',
         nome: 'JULIA MAGALHÃES PEREIRA',
         papel: 'DESBRAVADOR',
@@ -160,6 +154,50 @@ export const UNIDADES_OFICIAIS_SEED: UnidadeProps[] = [
     ],
   },
   {
+    id: 'unidade-5-aguia-escudeira',
+    codigo: '5',
+    nome: 'AGUIA ESCUDEIRA',
+    genero: 'FEMININO',
+    membros: [
+      {
+        id: 'p-christiane-ferreira',
+        nome: 'CHRISTIANE FERREIRA',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-5-aguia-escudeira',
+      },
+      {
+        id: 'p-daniela-sarracini',
+        nome: 'DANIELA SARRACINI DE QUEIROZ',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-5-aguia-escudeira',
+      },
+      {
+        id: 'p-francisca-vieira',
+        nome: 'FRANCISCA VIEIRA DE SOUZA PEREIRA',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-5-aguia-escudeira',
+      },
+      {
+        id: 'p-olinda-sarracini',
+        nome: 'OLINDA SARRACINI',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-5-aguia-escudeira',
+      },
+      {
+        id: 'p-raquel-tomaz',
+        nome: 'RAQUEL TOMAZ DE AQUINO QUADROS',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-5-aguia-escudeira',
+      },
+      {
+        id: 'p-rebeca-alves',
+        nome: 'REBECA ALVES DE SOUZA MARIA',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-5-aguia-escudeira',
+      },
+    ],
+  },
+  {
     id: 'unidade-1-aguia-real',
     codigo: '1',
     nome: 'AGUIA REAL',
@@ -174,7 +212,7 @@ export const UNIDADES_OFICIAIS_SEED: UnidadeProps[] = [
       {
         id: 'p-luciano-jose',
         nome: 'LUCIANO JOSÉ DA SILVA',
-        papel: 'DESBRAVADOR',
+        papel: 'DIRETORIA',
         unidadeId: 'unidade-1-aguia-real',
       },
       {
@@ -244,6 +282,50 @@ export const UNIDADES_OFICIAIS_SEED: UnidadeProps[] = [
         nome: 'VINÍCIUS DE SOUZA ANDRADE',
         papel: 'DIRETORIA',
         unidadeId: 'unidade-3-aguia-negra',
+      },
+    ],
+  },
+  {
+    id: 'unidade-5-falcao-negro',
+    codigo: '5',
+    nome: 'FALCAO NEGRO',
+    genero: 'MASCULINO',
+    membros: [
+      {
+        id: 'p-filipe-nogueira',
+        nome: 'FILIPE NOGUEIRA DA SILVA',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-5-falcao-negro',
+      },
+      {
+        id: 'p-gideoni-ferreira',
+        nome: 'GIDEONI FERREIRA QUADROS',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-5-falcao-negro',
+      },
+      {
+        id: 'p-marco-antonio-ferreira',
+        nome: 'MARCO ANTÔNIO FERREIRA DA SILVA',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-5-falcao-negro',
+      },
+      {
+        id: 'p-marco-antonio-gomes',
+        nome: 'MARCO ANTÔNIO GOMES SANTOS',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-5-falcao-negro',
+      },
+      {
+        id: 'p-peck-resston',
+        nome: 'PECK RESSTON DE QUEIROZ',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-5-falcao-negro',
+      },
+      {
+        id: 'p-fernando-langer',
+        nome: 'FERNANDO LANGER',
+        papel: 'DIRETORIA',
+        unidadeId: 'unidade-5-falcao-negro',
       },
     ],
   },
